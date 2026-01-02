@@ -1,0 +1,48 @@
+services:
+  padoru-event-notif:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: padoru-event-notif
+    restart: unless-stopped
+    ports:
+      - "3000:8080"
+
+    # Security: Read-only filesystem
+    read_only: true
+    tmpfs:
+      - /var/cache/nginx:uid=1001,gid=1001
+      - /var/run:uid=1001,gid=1001
+      - /var/log/nginx:uid=1001,gid=1001
+
+    # Security: Drop all capabilities, add only what's needed
+    cap_drop:
+      - ALL
+    cap_add:
+      - NET_BIND_SERVICE
+
+    # Security: No new privileges
+    security_opt:
+      - no-new-privileges:true
+
+    # Security: Resource limits
+    deploy:
+      resources:
+        limits:
+          cpus: '0.5'
+          memory: 128M
+        reservations:
+          cpus: '0.1'
+          memory: 32M
+
+    # Health check
+    healthcheck:
+      test: [ "CMD", "wget", "--no-verbose", "--tries=1", "--spider", "http://localhost:8080/" ]
+      interval: 30s
+      timeout: 3s
+      retries: 3
+      start_period: 10s
+
+    labels:
+      - "app=padoru-event-notif"
+      - "environment=production"

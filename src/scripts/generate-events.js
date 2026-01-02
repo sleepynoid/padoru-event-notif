@@ -3,9 +3,11 @@ import { writeFile, mkdir, readdir, unlink, readFile } from 'fs/promises';
 import { join, dirname } from 'path';
 
 async function readGoogleSheet(url) {
-  const urlMatch = url.match(/\/d\/([^\/]+)\/.*[?&]gid=(\d+)/);
+  // Handle both ?gid= and #gid= formats
+  const urlMatch = url.match(/\/d\/([^\/]+)\/.*[?&#]gid=(\d+)/);
   if (!urlMatch) {
-    throw new Error('Invalid Google Sheets URL format');
+    console.error('URL received:', url);
+    throw new Error('Invalid Google Sheets URL format. Expected format: https://docs.google.com/spreadsheets/d/SPREADSHEET_ID/edit?gid=GID');
   }
 
   const spreadsheetId = urlMatch[1];
@@ -73,7 +75,8 @@ function eventsEqual(event1, event2) {
 }
 
 async function generateEventFiles() {
-  const url = 'https://docs.google.com/spreadsheets/d/1RQ2PZMRKjBVHpG0ettmuiDjjxzpF7OfFDfXlJDT0ElE/edit?gid=672618632#gid=672618632';
+  // Read from environment variable, fallback to default
+  const url = process.env.GOOGLE_SHEET_URL || 'https://docs.google.com/spreadsheets/d/1RQ2PZMRKjBVHpG0ettmuiDjjxzpF7OfFDfXlJDT0ElE/edit?gid=672618632#gid=672618632';
 
   try {
     const data = await readGoogleSheet(url);

@@ -7,7 +7,7 @@
     "build": "astro build",
     "preview": "astro preview",
     "astro": "astro",
-    "generate-events": "node src/scripts/generate-events.js"
+    "generate-events": "node --env-file=.env src/scripts/generate-events.js"
   },
   "dependencies": {
     "@astrojs/mdx": "^4.3.13",

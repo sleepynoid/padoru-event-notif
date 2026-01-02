@@ -6,7 +6,12 @@ import { defineConfig } from 'astro/config';
 
 // https://astro.build/config
 export default defineConfig({
-	site: 'https://padoru-event-notif.pages.dev',
+	// Site URL - use env var for flexibility, fallback to localhost for dev
+	site: process.env.SITE_URL || 'http://localhost:3000',
+	// Build configuration
+	build: {
+		// Generate clean URLs with directory format (creates /page/index.html)
+		format: 'directory',
+	},
 	integrations: [mdx(), sitemap()],
 });
-

@@ -3,131 +3,147 @@ import BaseLayout from '../layouts/BaseLayout.astro';
 ---
 
 <BaseLayout title="About | Padoru Event Notif" description="About Padoru Event Notif" activeNav="about">
-	<section class="about-section">
-		<h1 class="about-title">About Padoru Event Notif</h1>
-		<div class="about-content">
-			<p>
-				Padoru Event Notif is a comprehensive platform dedicated to keeping the Indonesian community
-				informed about the latest events, particularly in the cosplay, gaming, and entertainment sectors.
-				Our mission is to bridge the gap between event organizers and attendees by providing accurate,
-				up-to-date information in an easily accessible format.
-			</p>
+	<section class="page-header">
+		<h1 class="page-title">About</h1>
+		<p class="page-subtitle">Platform event notifier untuk komunitas Indonesia</p>
+	</section>
 
-			<h2>Our Mission</h2>
+	<div class="content-grid">
+		<article class="content-card">
+			<h2>🎯 Mission</h2>
 			<p>
-				We believe that everyone should have access to timely and accurate event information. By
-				aggregating data from various sources and presenting it in a clean, organized manner, we aim
-				to enhance the community experience and support the growth of local events and conventions.
+				Padoru Event Notif hadir untuk memudahkan komunitas anime, cosplay, dan gaming 
+				di Indonesia dalam menemukan event-event yang mereka cari. Kami mengumpulkan 
+				informasi dari berbagai sumber dan menyajikannya dalam format yang mudah diakses.
 			</p>
+		</article>
 
-			<h2>Key Features</h2>
-			<div class="feature-list">
-				<div class="feature-item">
-					<h3>📊 Data Aggregation</h3>
-					<p>Automatically collect and organize event data from multiple sources including community spreadsheets.</p>
-				</div>
-				<div class="feature-item">
-					<h3>🔄 Real-time Updates</h3>
-					<p>Stay current with the latest event information through our automated update system.</p>
-				</div>
-				<div class="feature-item">
-					<h3>🎯 Community Focus</h3>
-					<p>Dedicated to serving the Indonesian cosplay, gaming, and entertainment communities.</p>
-				</div>
-				<div class="feature-item">
-					<h3>📱 Mobile Friendly</h3>
-					<p>Responsive design that works perfectly on all devices, from phones to desktops.</p>
-				</div>
-			</div>
-
-			<h2>Technology</h2>
+		<article class="content-card">
+			<h2>📊 Data Source</h2>
 			<p>
-				Built with modern web technologies including Astro for optimal performance, this platform
-				delivers fast loading times and a smooth user experience. Our system integrates with Google
-				Sheets for data management and ensures reliability and accuracy in all event information.
+				Data event dikumpulkan dari spreadsheet komunitas yang dikelola oleh volunteer. 
+				Update dilakukan secara otomatis setiap hari untuk memastikan informasi selalu akurat.
 			</p>
+		</article>
 
+		<article class="content-card">
+			<h2>⚡ Technology</h2>
 			<p>
-				Thank you for choosing Padoru Event Notif as your go-to source for event information.
-				We are committed to continuously improving our platform to better serve our community.
+				Dibangun dengan Astro untuk performa optimal. Static site generation 
+				memastikan loading time yang cepat di semua device dan koneksi internet.
 			</p>
-		</div>
+		</article>
+
+		<article class="content-card">
+			<h2>🤝 Community</h2>
+			<p>
+				Project open source ini berkembang berkat kontribusi komunitas. 
+				Jika kamu menemukan bug atau ingin menambahkan fitur, feel free untuk berkontribusi!
+			</p>
+		</article>
+	</div>
+
+	<section class="cta-section">
+		<h2>Ready to explore?</h2>
+		<p>Temukan event-event menarik di sekitarmu</p>
+		<a href="/events" class="cta-button">
+			Browse Events
+			<span>→</span>
+		</a>
 	</section>
 </BaseLayout>
 
 <style>
-	.about-section {
-		background: white;
-		border-radius: 12px;
-		padding: 40px;
-		box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
-		margin-bottom: 40px;
+	.page-header {
+		margin-bottom: 48px;
 	}
 
-	.about-title {
+	.page-title {
 		font-size: 2.5rem;
-		font-weight: 300;
-		color: #333;
-		text-align: center;
-		margin-bottom: 30px;
+		font-weight: 700;
+		margin-bottom: 8px;
 	}
 
-	.about-content {
-		max-width: 800px;
-		margin: 0 auto;
-	}
-
-	.about-content p {
-		color: #666;
-		line-height: 1.8;
-		margin-bottom: 20px;
+	.page-subtitle {
+		color: var(--text-muted);
 		font-size: 1.1rem;
 	}
 
-	.about-content h2 {
-		color: #023047;
-		font-size: 1.8rem;
-		font-weight: 500;
-		margin: 40px 0 20px 0;
-	}
-
-	.feature-list {
+	.content-grid {
 		display: grid;
-		grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-		gap: 20px;
-		margin: 30px 0;
+		grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+		gap: 24px;
 	}
 
-	.feature-item {
-		background: #f8f9fa;
-		padding: 20px;
-		border-radius: 8px;
-		border-left: 4px solid #219ebc;
+	.content-card {
+		background: var(--surface);
+		border: 1px solid var(--border);
+		border-radius: 16px;
+		padding: 28px;
+		transition: border-color 0.2s ease;
 	}
 
-	.feature-item h3 {
-		color: #023047;
-		font-size: 1.2rem;
-		margin: 0 0 10px 0;
+	.content-card:hover {
+		border-color: var(--primary);
 	}
 
-	.feature-item p {
-		color: #666;
-		margin: 0;
+	.content-card h2 {
+		font-size: 1.25rem;
+		font-weight: 600;
+		margin-bottom: 12px;
+	}
+
+	.content-card p {
+		color: var(--text-muted);
+		line-height: 1.7;
 		font-size: 0.95rem;
 	}
 
-	@media (max-width: 768px) {
-		.about-section {
-			padding: 20px;
-		}
+	.cta-section {
+		text-align: center;
+		margin-top: 80px;
+		padding: 60px 40px;
+		background: var(--surface);
+		border: 1px solid var(--border);
+		border-radius: 20px;
+	}
 
-		.about-title {
+	.cta-section h2 {
+		font-size: 1.75rem;
+		font-weight: 600;
+		margin-bottom: 8px;
+	}
+
+	.cta-section p {
+		color: var(--text-muted);
+		margin-bottom: 24px;
+	}
+
+	.cta-button {
+		display: inline-flex;
+		align-items: center;
+		gap: 8px;
+		padding: 14px 28px;
+		background: linear-gradient(135deg, #6366f1 0%, #8b5cf6 100%);
+		color: white;
+		text-decoration: none;
+		border-radius: 12px;
+		font-weight: 600;
+		transition: all 0.2s ease;
+	}
+
+	.cta-button:hover {
+		transform: translateY(-2px);
+		box-shadow: 0 8px 30px rgba(99, 102, 241, 0.4);
+	}
+
+	@media (max-width: 640px) {
+		.page-title {
 			font-size: 2rem;
 		}
 
-		.feature-list {
-			grid-template-columns: 1fr;
+		.cta-section {
+			padding: 40px 24px;
 		}
 	}
 </style>

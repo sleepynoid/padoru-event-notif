@@ -12,9 +12,7 @@ export async function getStaticPaths() {
 }
 
 const { event, allEvents, index } = Astro.props;
-const uniqueAreas = getUniqueAreas(allEvents);
 
-// Get related events (same area, different event)
 const relatedEvents = allEvents
 	.filter(e => e.data.area === event.data.area && e.id !== event.id)
 	.slice(0, 3);
@@ -25,70 +23,69 @@ const relatedEvents = allEvents
 	description={`${event.data.namaAcara} - ${event.data.lokasi}, ${event.data.area}`}
 	activeNav="events"
 >
+	<a href="/events" class="back-link">← Back to Events</a>
+	
 	<article class="event-detail">
-		<a href="/events" class="back-link">← Back to Events</a>
-		
 		<header class="event-header">
-			<p class="event-date">{event.data.tanggal}</p>
+			<span class="event-date-badge">{event.data.tanggal}</span>
 			<h1 class="event-title">{event.data.namaAcara}</h1>
 			<div class="event-meta">
 				<span class="meta-item">📍 {event.data.lokasi}</span>
+				<span class="meta-divider">•</span>
 				<span class="meta-item">🏙️ {event.data.area}</span>
-				{event.data.jam && <span class="meta-item">🕐 {event.data.jam}</span>}
+				{event.data.jam && (
+					<>
+						<span class="meta-divider">•</span>
+						<span class="meta-item">🕐 {event.data.jam}</span>
+					</>
+				)}
 			</div>
 		</header>
 
-		<div class="event-image-container">
-			<div class="event-hero-image" style="background-image: url('/IMG_5027.JPG');"></div>
-		</div>
-
-		<div class="event-content">
-			<section class="event-info">
-				<h2>Event Details</h2>
-				<dl class="info-list">
+		<div class="info-card">
+			<h2>Event Details</h2>
+			<dl class="info-list">
+				<div class="info-item">
+					<dt>📅 Date</dt>
+					<dd>{event.data.tanggal}</dd>
+				</div>
+				{event.data.jam && (
 					<div class="info-item">
-						<dt>📅 Date</dt>
-						<dd>{event.data.tanggal}</dd>
+						<dt>🕐 Time</dt>
+						<dd>{event.data.jam}</dd>
 					</div>
-					{event.data.jam && (
-						<div class="info-item">
-							<dt>🕐 Time</dt>
-							<dd>{event.data.jam}</dd>
-						</div>
-					)}
+				)}
+				<div class="info-item">
+					<dt>📍 Location</dt>
+					<dd>{event.data.lokasi}</dd>
+				</div>
+				<div class="info-item">
+					<dt>🏙️ City</dt>
+					<dd>{event.data.area}</dd>
+				</div>
+				{event.data.lastUpdate && (
 					<div class="info-item">
-						<dt>📍 Location</dt>
-						<dd>{event.data.lokasi}</dd>
+						<dt>🔄 Updated</dt>
+						<dd>{event.data.lastUpdate}</dd>
 					</div>
-					<div class="info-item">
-						<dt>🏙️ City</dt>
-						<dd>{event.data.area}</dd>
-					</div>
-					{event.data.lastUpdate && (
-						<div class="info-item">
-							<dt>🔄 Last Update</dt>
-							<dd>{event.data.lastUpdate}</dd>
-						</div>
-					)}
-				</dl>
-			</section>
-
-			<div class="event-actions">
-				<a href={event.data.linkAcara} target="_blank" rel="noopener noreferrer" class="cta-button">
-					View Event Page →
-				</a>
-			</div>
+				)}
+			</dl>
+			
+			<a href={event.data.linkAcara} target="_blank" rel="noopener noreferrer" class="cta-button">
+				View Event Page
+				<span>→</span>
+			</a>
 		</div>
 
 		{relatedEvents.length > 0 && (
-			<section class="related-events">
-				<h2>More Events in {event.data.area}</h2>
+			<section class="related-section">
+				<h2>More in {event.data.area}</h2>
 				<div class="related-grid">
 					{relatedEvents.map(related => (
 						<a href={`/events/event-${related.id.replace('event-', '')}`} class="related-card">
-							<p class="related-date">{related.data.tanggal}</p>
+							<span class="related-date">{related.data.tanggal}</span>
 							<h3 class="related-title">{related.data.namaAcara}</h3>
-							<p class="related-location">{related.data.lokasi}</p>
+							<span class="related-location">{related.data.lokasi}</span>
 						</a>
 					))}
 				</div>
@@ -98,95 +95,80 @@ const relatedEvents = allEvents
 </BaseLayout>
 
 <style>
-	.event-detail {
-		max-width: 900px;
-		margin: 0 auto;
-	}
-
 	.back-link {
 		display: inline-block;
-		color: #219ebc;
+		color: var(--text-muted);
 		text-decoration: none;
-		font-weight: 500;
-		margin-bottom: 20px;
-		transition: color 0.3s ease;
+		font-size: 0.9rem;
+		margin-bottom: 24px;
+		transition: color 0.2s ease;
 	}
 
 	.back-link:hover {
-		color: #023047;
+		color: var(--text);
+	}
+
+	.event-detail {
+		max-width: 800px;
 	}
 
 	.event-header {
-		text-align: center;
-		margin-bottom: 30px;
+		margin-bottom: 32px;
 	}
 
-	.event-date {
-		color: #219ebc;
+	.event-date-badge {
+		display: inline-block;
+		background: linear-gradient(135deg, #6366f1 0%, #8b5cf6 100%);
+		color: white;
+		padding: 8px 16px;
+		border-radius: 8px;
+		font-size: 0.875rem;
 		font-weight: 600;
-		font-size: 1rem;
-		text-transform: uppercase;
-		letter-spacing: 1px;
-		margin: 0 0 15px 0;
+		margin-bottom: 16px;
 	}
 
 	.event-title {
-		font-size: 2.5rem;
-		font-weight: 600;
-		color: #023047;
-		margin: 0 0 20px 0;
+		font-size: 2.25rem;
+		font-weight: 700;
 		line-height: 1.2;
+		margin-bottom: 16px;
 	}
 
 	.event-meta {
 		display: flex;
-		justify-content: center;
-		gap: 20px;
+		align-items: center;
+		gap: 12px;
 		flex-wrap: wrap;
+		color: var(--text-muted);
 	}
 
-	.meta-item {
-		color: #666;
-		font-size: 1rem;
+	.meta-divider {
+		color: var(--border);
 	}
 
-	.event-image-container {
-		margin-bottom: 30px;
+	.info-card {
+		background: var(--surface);
+		border: 1px solid var(--border);
 		border-radius: 16px;
-		overflow: hidden;
-		box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
-	}
-
-	.event-hero-image {
-		width: 100%;
-		height: 400px;
-		background-size: cover;
-		background-position: center;
-	}
-
-	.event-content {
-		background: white;
-		border-radius: 16px;
-		padding: 40px;
-		box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+		padding: 32px;
 		margin-bottom: 40px;
 	}
 
-	.event-info h2 {
-		color: #023047;
-		font-size: 1.5rem;
-		margin: 0 0 20px 0;
+	.info-card h2 {
+		font-size: 1.25rem;
+		font-weight: 600;
+		margin-bottom: 24px;
 	}
 
 	.info-list {
-		margin: 0;
+		margin: 0 0 32px;
 	}
 
 	.info-item {
 		display: flex;
-		gap: 20px;
-		padding: 15px 0;
-		border-bottom: 1px solid #eee;
+		justify-content: space-between;
+		padding: 16px 0;
+		border-bottom: 1px solid var(--border);
 	}
 
 	.info-item:last-child {
@@ -194,119 +176,98 @@ const relatedEvents = allEvents
 	}
 
 	.info-item dt {
-		font-weight: 600;
-		color: #333;
-		min-width: 150px;
+		color: var(--text-muted);
 	}
 
 	.info-item dd {
-		margin: 0;
-		color: #666;
-	}
-
-	.event-actions {
-		margin-top: 30px;
-		text-align: center;
+		font-weight: 500;
+		text-align: right;
 	}
 
 	.cta-button {
-		display: inline-block;
-		padding: 15px 40px;
-		background: linear-gradient(135deg, #ffb703, #fb8500);
-		color: #023047;
+		display: inline-flex;
+		align-items: center;
+		gap: 8px;
+		width: 100%;
+		justify-content: center;
+		padding: 16px 28px;
+		background: linear-gradient(135deg, #6366f1 0%, #8b5cf6 100%);
+		color: white;
 		text-decoration: none;
-		border-radius: 30px;
+		border-radius: 12px;
 		font-weight: 600;
-		font-size: 1.1rem;
-		transition: transform 0.3s ease, box-shadow 0.3s ease;
-		box-shadow: 0 4px 15px rgba(255, 183, 3, 0.3);
+		transition: all 0.2s ease;
 	}
 
 	.cta-button:hover {
 		transform: translateY(-2px);
-		box-shadow: 0 8px 25px rgba(255, 183, 3, 0.4);
+		box-shadow: 0 8px 30px rgba(99, 102, 241, 0.4);
 	}
 
-	.related-events {
-		background: white;
-		border-radius: 16px;
-		padding: 40px;
-		box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+	.related-section {
+		margin-top: 60px;
 	}
 
-	.related-events h2 {
-		color: #023047;
+	.related-section h2 {
 		font-size: 1.5rem;
-		margin: 0 0 25px 0;
-		text-align: center;
+		font-weight: 600;
+		margin-bottom: 24px;
 	}
 
 	.related-grid {
 		display: grid;
-		grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-		gap: 20px;
+		gap: 16px;
 	}
 
 	.related-card {
-		background: #f8f9fa;
-		padding: 20px;
+		display: block;
+		background: var(--surface);
+		border: 1px solid var(--border);
 		border-radius: 12px;
+		padding: 20px;
 		text-decoration: none;
-		transition: transform 0.3s ease, box-shadow 0.3s ease;
-		border: 2px solid transparent;
+		color: inherit;
+		transition: all 0.2s ease;
 	}
 
 	.related-card:hover {
-		transform: translateY(-3px);
-		box-shadow: 0 6px 20px rgba(0, 0, 0, 0.1);
-		border-color: #219ebc;
+		border-color: var(--primary);
+		transform: translateX(4px);
 	}
 
 	.related-date {
-		color: #219ebc;
+		color: var(--primary);
 		font-size: 0.85rem;
 		font-weight: 600;
-		margin: 0 0 8px 0;
 	}
 
 	.related-title {
-		color: #023047;
 		font-size: 1.1rem;
-		margin: 0 0 8px 0;
-		line-height: 1.3;
+		font-weight: 600;
+		margin: 8px 0;
 	}
 
 	.related-location {
-		color: #666;
+		color: var(--text-muted);
 		font-size: 0.9rem;
-		margin: 0;
 	}
 
-	@media (max-width: 768px) {
+	@media (max-width: 640px) {
 		.event-title {
-			font-size: 1.8rem;
+			font-size: 1.75rem;
 		}
 
-		.event-meta {
-			flex-direction: column;
-			gap: 10px;
-		}
-
-		.event-hero-image {
-			height: 250px;
-		}
-
-		.event-content {
-			padding: 25px;
+		.info-card {
+			padding: 24px;
 		}
 
 		.info-item {
 			flex-direction: column;
-			gap: 5px;
+			gap: 4px;
 		}
 
-		.info-item dt {
-			min-width: auto;
+		.info-item dd {
+			text-align: left;
 		}
 	}
 </style>

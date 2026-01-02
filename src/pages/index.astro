@@ -1,129 +1,245 @@
 ---
 import BaseLayout from '../layouts/BaseLayout.astro';
+import { getCollection } from 'astro:content';
+
+const events = await getCollection('eventMetadata');
+const upcomingCount = events.length;
+const areas = [...new Set(events.map(e => e.data.area))].length;
 ---
 
 <BaseLayout activeNav="home">
-	<section class="hero-section">
-		<h1 class="hero-title">🎉 Padoru Event Notif</h1>
+	<section class="hero">
+		<div class="hero-badge">🎭 Event Notifier Indonesia</div>
+		<h1 class="hero-title">
+			Temukan Event <span class="gradient-text">Anime & Cosplay</span> di Indonesia
+		</h1>
 		<p class="hero-subtitle">
-			Welcome to Padoru Event Notif, your go-to source for the latest event information in Indonesia.
-			We aggregate and organize event data from various sources to keep you updated on upcoming
-			cosplay events, gaming conventions, and entertainment gatherings.
+			Platform terlengkap untuk informasi event cosplay, gaming convention, 
+			dan acara entertainment di seluruh Indonesia.
 		</p>
-		<a href="/events" class="cta-button">Explore Events</a>
+		<div class="hero-actions">
+			<a href="/events" class="btn btn-primary">
+				Explore Events
+				<span class="btn-arrow">→</span>
+			</a>
+			<a href="/about" class="btn btn-secondary">Learn More</a>
+		</div>
+		<div class="hero-stats">
+			<div class="stat">
+				<span class="stat-value">{upcomingCount}</span>
+				<span class="stat-label">Events</span>
+			</div>
+			<div class="stat-divider"></div>
+			<div class="stat">
+				<span class="stat-value">{areas}</span>
+				<span class="stat-label">Cities</span>
+			</div>
+			<div class="stat-divider"></div>
+			<div class="stat">
+				<span class="stat-value">Daily</span>
+				<span class="stat-label">Updates</span>
+			</div>
+		</div>
 	</section>
 
-	<section class="features-section">
+	<section class="features">
 		<div class="feature-card">
-			<div class="feature-icon">📅</div>
-			<h3 class="feature-title">Real-time Updates</h3>
-			<p class="feature-description">Automatically fetch and update event information from Google Sheets for the latest data.</p>
-		</div>
-		<div class="feature-card">
-			<div class="feature-icon">🎨</div>
-			<h3 class="feature-title">Modern Design</h3>
-			<p class="feature-description">Beautiful, responsive design with a professional blue theme that works on all devices.</p>
+			<div class="feature-icon">📡</div>
+			<h3 class="feature-title">Real-time Data</h3>
+			<p class="feature-desc">Data event diperbarui otomatis dari sumber komunitas terpercaya</p>
 		</div>
 		<div class="feature-card">
 			<div class="feature-icon">🔍</div>
-			<h3 class="feature-title">Easy Navigation</h3>
-			<p class="feature-description">Intuitive event listings with detailed information and direct links to event pages.</p>
+			<h3 class="feature-title">Smart Search</h3>
+			<p class="feature-desc">Filter berdasarkan kota, tanggal, atau nama event dengan mudah</p>
 		</div>
 		<div class="feature-card">
 			<div class="feature-icon">⚡</div>
-			<h3 class="feature-title">Fast & Reliable</h3>
-			<p class="feature-description">Built with Astro for optimal performance and lightning-fast loading times.</p>
+			<h3 class="feature-title">Lightning Fast</h3>
+			<p class="feature-desc">Dibangun dengan Astro untuk performa optimal di semua device</p>
 		</div>
 	</section>
 </BaseLayout>
 
 <style>
-	.hero-section {
+	.hero {
 		text-align: center;
-		margin-bottom: 60px;
+		padding: 60px 0 80px;
+	}
+
+	.hero-badge {
+		display: inline-block;
+		background: var(--surface-light);
+		border: 1px solid var(--border);
+		padding: 8px 16px;
+		border-radius: 100px;
+		font-size: 0.875rem;
+		color: var(--text-muted);
+		margin-bottom: 24px;
 	}
 
 	.hero-title {
-		font-size: 3rem;
-		font-weight: 300;
-		color: #333;
-		margin-bottom: 20px;
+		font-size: clamp(2.5rem, 5vw, 4rem);
+		font-weight: 700;
+		line-height: 1.1;
+		margin-bottom: 24px;
+		letter-spacing: -0.02em;
+	}
+
+	.gradient-text {
+		background: linear-gradient(135deg, #6366f1 0%, #8b5cf6 50%, #ec4899 100%);
+		-webkit-background-clip: text;
+		-webkit-text-fill-color: transparent;
+		background-clip: text;
 	}
 
 	.hero-subtitle {
-		font-size: 1.2rem;
-		color: #666;
-		margin-bottom: 30px;
-		line-height: 1.6;
+		font-size: 1.125rem;
+		color: var(--text-muted);
+		max-width: 600px;
+		margin: 0 auto 40px;
+		line-height: 1.7;
 	}
 
-	.cta-button {
-		display: inline-block;
-		padding: 15px 30px;
-		background: linear-gradient(135deg, #ffb703, #fb8500);
-		color: #023047;
-		text-decoration: none;
-		border-radius: 25px;
+	.hero-actions {
+		display: flex;
+		gap: 16px;
+		justify-content: center;
+		flex-wrap: wrap;
+		margin-bottom: 60px;
+	}
+
+	.btn {
+		display: inline-flex;
+		align-items: center;
+		gap: 8px;
+		padding: 14px 28px;
+		border-radius: 12px;
 		font-weight: 600;
-		font-size: 1.1rem;
-		transition: transform 0.3s ease, box-shadow 0.3s ease;
-		box-shadow: 0 4px 15px rgba(255, 183, 3, 0.3);
+		font-size: 1rem;
+		text-decoration: none;
+		transition: all 0.2s ease;
 	}
 
-	.cta-button:hover {
+	.btn-primary {
+		background: linear-gradient(135deg, #6366f1 0%, #8b5cf6 100%);
+		color: white;
+		box-shadow: 0 4px 20px rgba(99, 102, 241, 0.3);
+	}
+
+	.btn-primary:hover {
 		transform: translateY(-2px);
-		box-shadow: 0 8px 25px rgba(255, 183, 3, 0.4);
+		box-shadow: 0 8px 30px rgba(99, 102, 241, 0.4);
 	}
 
-	.features-section {
+	.btn-arrow {
+		transition: transform 0.2s ease;
+	}
+
+	.btn-primary:hover .btn-arrow {
+		transform: translateX(4px);
+	}
+
+	.btn-secondary {
+		background: var(--surface-light);
+		color: var(--text);
+		border: 1px solid var(--border);
+	}
+
+	.btn-secondary:hover {
+		background: var(--surface);
+		border-color: var(--text-muted);
+	}
+
+	.hero-stats {
+		display: flex;
+		justify-content: center;
+		align-items: center;
+		gap: 40px;
+		padding: 32px;
+		background: var(--surface);
+		border-radius: 16px;
+		border: 1px solid var(--border);
+		max-width: 500px;
+		margin: 0 auto;
+	}
+
+	.stat {
+		text-align: center;
+	}
+
+	.stat-value {
+		display: block;
+		font-size: 2rem;
+		font-weight: 700;
+		color: var(--text);
+		margin-bottom: 4px;
+	}
+
+	.stat-label {
+		font-size: 0.875rem;
+		color: var(--text-muted);
+		text-transform: uppercase;
+		letter-spacing: 0.05em;
+	}
+
+	.stat-divider {
+		width: 1px;
+		height: 40px;
+		background: var(--border);
+	}
+
+	/* Features */
+	.features {
 		display: grid;
-		grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-		gap: 30px;
-		margin: 60px 0;
+		grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+		gap: 24px;
+		margin-top: 80px;
 	}
 
 	.feature-card {
-		background: white;
-		padding: 30px;
-		border-radius: 12px;
-		box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
-		text-align: center;
-		transition: transform 0.3s ease;
+		background: var(--surface);
+		border: 1px solid var(--border);
+		border-radius: 16px;
+		padding: 32px;
+		transition: all 0.2s ease;
 	}
 
 	.feature-card:hover {
-		transform: translateY(-5px);
+		border-color: var(--primary);
+		transform: translateY(-4px);
 	}
 
 	.feature-icon {
-		font-size: 3rem;
-		margin-bottom: 20px;
+		font-size: 2.5rem;
+		margin-bottom: 16px;
 	}
 
 	.feature-title {
-		font-size: 1.3rem;
+		font-size: 1.25rem;
 		font-weight: 600;
-		color: #333;
-		margin-bottom: 15px;
+		margin-bottom: 8px;
 	}
 
-	.feature-description {
-		color: #666;
+	.feature-desc {
+		color: var(--text-muted);
+		font-size: 0.95rem;
 		line-height: 1.6;
 	}
 
-	@media (max-width: 768px) {
-		.hero-title {
-			font-size: 2.5rem;
+	@media (max-width: 640px) {
+		.hero {
+			padding: 40px 0 60px;
 		}
 
-		.hero-subtitle {
-			font-size: 1.1rem;
+		.hero-stats {
+			flex-direction: column;
+			gap: 24px;
 		}
 
-		.features-section {
-			grid-template-columns: 1fr;
-			gap: 20px;
+		.stat-divider {
+			width: 60px;
+			height: 1px;
 		}
 	}
 </style>

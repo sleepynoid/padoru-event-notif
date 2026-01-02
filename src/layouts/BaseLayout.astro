@@ -16,81 +16,187 @@ const {
 ---
 
 <!doctype html>
-<html lang="en">
+<html lang="en" data-theme="dark">
 	<head>
 		<BaseHead title={title} description={description} />
+		<link rel="preconnect" href="https://fonts.googleapis.com">
+		<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+		<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
 		<style>
-			/* Base Styles */
-			body {
-				background-color: #f5f5f5;
-				font-family: 'Roboto', sans-serif;
+			/* CSS Reset & Base */
+			*, *::before, *::after {
+				box-sizing: border-box;
 				margin: 0;
 				padding: 0;
 			}
 
-			/* Header Styles */
-			.site-header {
-				background: linear-gradient(135deg, #023047, #219ebc);
-				box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
-				position: sticky;
-				top: 0;
-				z-index: 100;
+			/* Light Theme */
+			:root, [data-theme="light"] {
+				--primary: #6366f1;
+				--primary-dark: #4f46e5;
+				--primary-light: #818cf8;
+				--secondary: #f59e0b;
+				--background: #f8fafc;
+				--surface: #ffffff;
+				--surface-light: #f1f5f9;
+				--text: #0f172a;
+				--text-muted: #64748b;
+				--border: #e2e8f0;
+				--header-bg: rgba(248, 250, 252, 0.85);
 			}
 
-			.site-nav {
+			/* Dark Theme */
+			[data-theme="dark"] {
+				--background: #0a0a0a;
+				--surface: #141414;
+				--surface-light: #1e1e1e;
+				--text: #fafafa;
+				--text-muted: #a1a1aa;
+				--border: #262626;
+				--header-bg: rgba(10, 10, 10, 0.85);
+			}
+
+			html {
+				overflow-x: hidden;
+			}
+
+			body {
+				font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+				background-color: var(--background);
+				color: var(--text);
+				line-height: 1.6;
+				min-height: 100vh;
+				-webkit-font-smoothing: antialiased;
+				overflow-x: hidden;
+			}
+
+			/* Header */
+			.header {
+				position: fixed;
+				top: 0;
+				left: 0;
+				right: 0;
+				z-index: 100;
+				background: var(--header-bg);
+				backdrop-filter: blur(20px);
+				border-bottom: 1px solid var(--border);
+			}
+
+			.nav {
 				max-width: 1200px;
 				margin: 0 auto;
-				padding: 0 20px;
+				padding: 0 24px;
 				display: flex;
 				align-items: center;
 				justify-content: space-between;
-				height: 70px;
+				height: 64px;
 			}
 
-			.brand-logo {
-				font-size: 1.8rem;
+			.logo {
+				font-size: 1.25rem;
 				font-weight: 700;
-				color: white !important;
+				color: var(--text);
 				text-decoration: none;
-				margin: 0;
+				display: flex;
+				align-items: center;
+				gap: 8px;
 			}
 
-			.nav-links {
+			.logo-icon {
+				font-size: 1.5rem;
+			}
+
+			.nav-center {
 				display: flex;
-				gap: 30px;
+				gap: 8px;
 			}
 
 			.nav-link {
-				color: white;
+				color: var(--text-muted);
 				text-decoration: none;
 				font-weight: 500;
+				font-size: 0.9rem;
 				padding: 8px 16px;
-				border-radius: 20px;
-				transition: background 0.3s ease;
+				border-radius: 8px;
+				transition: all 0.2s ease;
 			}
 
 			.nav-link:hover {
-				background: rgba(255, 255, 255, 0.1);
+				color: var(--text);
+				background: var(--surface-light);
 			}
 
 			.nav-link.active {
-				background: rgba(255, 255, 255, 0.2);
+				color: var(--text);
+				background: var(--surface-light);
 			}
 
-			/* Main Content */
+			.nav-right {
+				display: flex;
+				align-items: center;
+				gap: 12px;
+			}
+
+			/* Theme Toggle */
+			.theme-toggle {
+				display: flex;
+				align-items: center;
+				gap: 8px;
+				background: var(--surface-light);
+				padding: 6px 12px;
+				border-radius: 20px;
+				border: 1px solid var(--border);
+				cursor: pointer;
+			}
+
+			.theme-icon {
+				font-size: 1rem;
+				transition: opacity 0.2s ease;
+			}
+
+			.theme-slider {
+				position: relative;
+				width: 40px;
+				height: 22px;
+				background: var(--border);
+				border-radius: 11px;
+				transition: background 0.3s ease;
+			}
+
+			.theme-slider::after {
+				content: '';
+				position: absolute;
+				top: 3px;
+				left: 3px;
+				width: 16px;
+				height: 16px;
+				background: var(--text);
+				border-radius: 50%;
+				transition: transform 0.3s ease;
+			}
+
+			[data-theme="dark"] .theme-slider::after {
+				transform: translateX(18px);
+			}
+
+			[data-theme="dark"] .theme-slider {
+				background: var(--primary);
+			}
+
+			/* Main */
 			main {
 				max-width: 1200px;
 				margin: 0 auto;
-				padding: 40px 20px;
-				min-height: calc(100vh - 200px);
+				padding: 88px 24px 48px;
+				min-height: calc(100vh - 100px);
 			}
 
-			/* Footer Styles */
-			.site-footer {
-				background: linear-gradient(135deg, #333, #555);
-				color: white;
-				padding: 40px 20px 20px;
-				margin-top: 60px;
+			/* Footer */
+			.footer {
+				border-top: 1px solid var(--border);
+				padding: 32px 24px;
+				text-align: center;
+				background: var(--surface);
 			}
 
 			.footer-content {
@@ -100,53 +206,45 @@ const {
 				justify-content: space-between;
 				align-items: center;
 				flex-wrap: wrap;
-				gap: 20px;
+				gap: 16px;
 			}
 
 			.footer-text {
-				margin: 0;
-				font-size: 0.9rem;
-				color: #ccc;
+				color: var(--text-muted);
+				font-size: 0.875rem;
 			}
 
 			.footer-links {
 				display: flex;
-				gap: 20px;
+				gap: 24px;
 			}
 
 			.footer-link {
-				color: #8ecae6;
+				color: var(--text-muted);
 				text-decoration: none;
-				font-weight: 500;
-				transition: color 0.3s ease;
+				font-size: 0.875rem;
+				transition: color 0.2s ease;
 			}
 
 			.footer-link:hover {
-				color: #219ebc;
+				color: var(--text);
 			}
 
-			/* Responsive */
 			@media (max-width: 768px) {
-				.site-nav {
-					padding: 0 15px;
-					height: 60px;
+				.nav-center {
+					display: none;
 				}
 
-				.brand-logo {
-					font-size: 1.5rem;
+				.nav-right {
+					gap: 8px;
 				}
 
-				.nav-links {
-					gap: 15px;
+				.theme-toggle {
+					padding: 6px 8px;
 				}
 
-				.nav-link {
-					padding: 6px 12px;
-					font-size: 0.9rem;
-				}
-
-				main {
-					padding: 20px 15px;
+				.mobile-menu-btn {
+					display: flex;
 				}
 
 				.footer-content {
@@ -154,34 +252,89 @@ const {
 					text-align: center;
 				}
 
-				.footer-links {
-					justify-content: center;
+				main {
+					padding: 80px 16px 40px;
+				}
+			}
+
+			/* Mobile Menu */
+			.mobile-menu-btn {
+				display: none;
+				background: var(--surface-light);
+				border: 1px solid var(--border);
+				color: var(--text);
+				font-size: 1.25rem;
+				cursor: pointer;
+				padding: 8px 12px;
+				border-radius: 8px;
+			}
+
+			.mobile-nav {
+				display: none;
+				position: fixed;
+				top: 64px;
+				left: 0;
+				right: 0;
+				background: var(--surface);
+				border-bottom: 1px solid var(--border);
+				padding: 16px 24px;
+				flex-direction: column;
+				gap: 8px;
+				z-index: 99;
+			}
+
+			.mobile-nav.show {
+				display: flex;
+			}
+
+			.mobile-nav .nav-link {
+				padding: 12px 16px;
+				text-align: center;
+			}
+
+			@media (max-width: 768px) {
+				.mobile-menu-btn {
+					display: flex;
 				}
 			}
 		</style>
 	</head>
 	<body>
-		<!-- Header -->
-		<header class="site-header">
-			<nav class="site-nav">
-				<a href="/" class="brand-logo">Padoru Event Notif</a>
-				<div class="nav-links">
+		<header class="header">
+			<nav class="nav">
+				<a href="/" class="logo">
+					<span class="logo-icon">🎪</span>
+					<span>Padoru</span>
+				</a>
+				<div class="nav-center">
 					<a href="/" class:list={["nav-link", { active: activeNav === 'home' }]}>Home</a>
 					<a href="/events" class:list={["nav-link", { active: activeNav === 'events' }]}>Events</a>
 					<a href="/about" class:list={["nav-link", { active: activeNav === 'about' }]}>About</a>
 				</div>
+				<div class="nav-right">
+					<button class="theme-toggle" id="theme-toggle" aria-label="Toggle theme">
+						<span class="theme-icon">☀️</span>
+						<div class="theme-slider"></div>
+						<span class="theme-icon">🌙</span>
+					</button>
+					<button class="mobile-menu-btn" id="mobile-menu-btn" aria-label="Menu">☰</button>
+				</div>
 			</nav>
 		</header>
 
-		<!-- Main Content -->
+		<div class="mobile-nav" id="mobile-nav">
+			<a href="/" class:list={["nav-link", { active: activeNav === 'home' }]}>Home</a>
+			<a href="/events" class:list={["nav-link", { active: activeNav === 'events' }]}>Events</a>
+			<a href="/about" class:list={["nav-link", { active: activeNav === 'about' }]}>About</a>
+		</div>
+
 		<main>
 			<slot />
 		</main>
 
-		<!-- Footer -->
-		<footer class="site-footer">
+		<footer class="footer">
 			<div class="footer-content">
-				<p class="footer-text">&copy; {new Date().getFullYear()} Padoru Event Notif. All rights reserved.</p>
+				<p class="footer-text">© {new Date().getFullYear()} Padoru Event Notif</p>
 				<div class="footer-links">
 					<a href="/" class="footer-link">Home</a>
 					<a href="/events" class="footer-link">Events</a>
@@ -189,5 +342,30 @@ const {
 				</div>
 			</div>
 		</footer>
+
+		<script>
+			// Theme Toggle
+			const themeToggle = document.getElementById('theme-toggle');
+			const html = document.documentElement;
+			
+			// Check for saved theme preference or default to dark
+			const savedTheme = localStorage.getItem('theme') || 'dark';
+			html.setAttribute('data-theme', savedTheme);
+
+			themeToggle?.addEventListener('click', () => {
+				const currentTheme = html.getAttribute('data-theme');
+				const newTheme = currentTheme === 'dark' ? 'light' : 'dark';
+				html.setAttribute('data-theme', newTheme);
+				localStorage.setItem('theme', newTheme);
+			});
+
+			// Mobile Menu
+			const mobileMenuBtn = document.getElementById('mobile-menu-btn');
+			const mobileNav = document.getElementById('mobile-nav');
+
+			mobileMenuBtn?.addEventListener('click', () => {
+				mobileNav?.classList.toggle('show');
+			});
+		</script>
 	</body>
 </html>

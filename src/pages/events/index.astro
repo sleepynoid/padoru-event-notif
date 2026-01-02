@@ -2,7 +2,6 @@
 import { getCollection } from 'astro:content';
 import BaseLayout from '../../layouts/BaseLayout.astro';
 import EventCard from '../../components/EventCard.astro';
-import EventFilter from '../../components/EventFilter.astro';
 import { sortByDate, getUniqueAreas } from '../../utils/eventUtils';
 
 const allEvents = await getCollection('eventMetadata');
@@ -11,159 +10,203 @@ const uniqueAreas = getUniqueAreas(events);
 ---
 
 <BaseLayout title="Events | Padoru Event Notif" description="List of upcoming events" activeNav="events">
-	<section class="hero-section">
-		<h1 class="hero-title">🎪 Upcoming Events</h1>
-		<p class="hero-subtitle">
-			Discover the latest cosplay events, gaming conventions, and entertainment gatherings
-			in Indonesia. Stay updated with real-time information from community sources.
+	<section class="page-header">
+		<h1 class="page-title">Upcoming Events</h1>
+		<p class="page-subtitle">
+			{events.length} events tersedia di {uniqueAreas.length} kota
 		</p>
-		<div class="stats-bar">
-			<div class="stat-item">
-				<span class="stat-number">{events.length}</span>
-				<span class="stat-label">Events</span>
-			</div>
-			<div class="stat-item">
-				<span class="stat-number">{uniqueAreas.length}</span>
-				<span class="stat-label">Cities</span>
-			</div>
-			<div class="stat-item">
-				<span class="stat-number">📅</span>
-				<span class="stat-label">Updated Daily</span>
-			</div>
-		</div>
 	</section>
 
-	<EventFilter areas={uniqueAreas} />
-
-	<section class="events-section">
-		<div class="section-header">
-			<h2 class="section-title">All Events</h2>
-			<p class="section-subtitle">Sorted by date - newest first</p>
+	<section class="filter-section">
+		<div class="search-wrapper">
+			<span class="search-icon">🔍</span>
+			<input 
+				type="text" 
+				id="event-search" 
+				class="search-input" 
+				placeholder="Search events..."
+			/>
 		</div>
-
-		<div class="events-grid">
-			{
-				events.map((event) => (
-					<EventCard
-						tanggal={event.data.tanggal}
-						namaAcara={event.data.namaAcara}
-						lokasi={event.data.lokasi}
-						area={event.data.area}
-						jam={event.data.jam}
-						linkAcara={event.data.linkAcara}
-						lastUpdate={event.data.lastUpdate}
-					/>
-				))
-			}
-		</div>
+		<select id="area-filter" class="filter-select">
+			<option value="all">All Cities</option>
+			{uniqueAreas.map(area => (
+				<option value={area.toLowerCase()}>{area}</option>
+			))}
+		</select>
 	</section>
+
+	<div class="events-grid">
+		{
+			events.map((event) => (
+				<EventCard
+					tanggal={event.data.tanggal}
+					namaAcara={event.data.namaAcara}
+					lokasi={event.data.lokasi}
+					area={event.data.area}
+					jam={event.data.jam}
+					linkAcara={event.data.linkAcara}
+					lastUpdate={event.data.lastUpdate}
+				/>
+			))
+		}
+	</div>
+
+	<p class="no-results" id="no-results" style="display: none;">
+		No events found matching your search.
+	</p>
 </BaseLayout>
 
+<script>
+	const searchInput = document.getElementById('event-search') as HTMLInputElement;
+	const areaFilter = document.getElementById('area-filter') as HTMLSelectElement;
+	const eventCards = document.querySelectorAll('.event-card');
+	const noResults = document.getElementById('no-results');
+
+	function filterEvents() {
+		const searchQuery = searchInput?.value.toLowerCase() || '';
+		const selectedArea = areaFilter?.value || 'all';
+		let visibleCount = 0;
+
+		eventCards.forEach((card) => {
+			const htmlCard = card as HTMLElement;
+			const title = htmlCard.querySelector('.event-title')?.textContent?.toLowerCase() || '';
+			const location = htmlCard.querySelector('.event-location')?.textContent?.toLowerCase() || '';
+			const area = htmlCard.querySelector('.event-area')?.textContent?.toLowerCase() || '';
+
+			const matchesSearch = !searchQuery || 
+				title.includes(searchQuery) || 
+				location.includes(searchQuery);
+			
+			const matchesArea = selectedArea === 'all' || 
+				area.includes(selectedArea.toLowerCase());
+
+			if (matchesSearch && matchesArea) {
+				htmlCard.style.display = '';
+				visibleCount++;
+			} else {
+				htmlCard.style.display = 'none';
+			}
+		});
+
+		if (noResults) {
+			noResults.style.display = visibleCount === 0 ? 'block' : 'none';
+		}
+	}
+
+	searchInput?.addEventListener('input', filterEvents);
+	areaFilter?.addEventListener('change', filterEvents);
+</script>
+
 <style>
-	/* Hero Section */
-	.hero-section {
-		text-align: center;
+	.page-header {
 		margin-bottom: 40px;
-		padding: 60px 20px;
-		background: white;
-		border-radius: 16px;
-		box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
 	}
 
-	.hero-title {
-		font-size: 3.5rem;
-		font-weight: 300;
-		color: #333;
-		margin-bottom: 20px;
-		background: linear-gradient(135deg, #023047, #219ebc);
-		-webkit-background-clip: text;
-		-webkit-text-fill-color: transparent;
-		background-clip: text;
-	}
-
-	.hero-subtitle {
-		font-size: 1.2rem;
-		color: #666;
-		margin-bottom: 40px;
-		line-height: 1.6;
-		max-width: 600px;
-		margin-left: auto;
-		margin-right: auto;
-	}
-
-	.stats-bar {
-		display: flex;
-		justify-content: center;
-		gap: 40px;
-		margin-top: 30px;
-	}
-
-	.stat-item {
-		text-align: center;
-	}
-
-	.stat-number {
-		display: block;
+	.page-title {
 		font-size: 2.5rem;
 		font-weight: 700;
-		color: #219ebc;
-		line-height: 1;
+		margin-bottom: 8px;
 	}
 
-	.stat-label {
-		display: block;
-		font-size: 0.9rem;
-		color: #666;
-		text-transform: uppercase;
-		letter-spacing: 1px;
-		margin-top: 5px;
-	}
-
-	/* Events Section */
-	.events-section {
-		margin-top: 0;
-	}
-
-	.section-header {
-		text-align: center;
-		margin-bottom: 30px;
-	}
-
-	.section-title {
-		font-size: 2.2rem;
-		font-weight: 400;
-		color: #333;
-		margin-bottom: 10px;
-	}
-
-	.section-subtitle {
+	.page-subtitle {
+		color: var(--text-muted);
 		font-size: 1rem;
-		color: #666;
-		margin: 0;
 	}
 
-	/* Events Grid */
-	.events-grid {
+	.filter-section {
 		display: flex;
-		flex-direction: column;
 		gap: 16px;
+		margin-bottom: 32px;
+		flex-wrap: wrap;
+		width: 100%;
+		max-width: 100%;
 	}
 
-	@media (max-width: 768px) {
-		.hero-section {
-			padding: 40px 20px;
-		}
+	.search-wrapper {
+		flex: 1 1 300px;
+		min-width: 0;
+		max-width: 100%;
+		position: relative;
+	}
 
-		.hero-title {
-			font-size: 2.5rem;
-		}
+	.search-icon {
+		position: absolute;
+		left: 16px;
+		top: 50%;
+		transform: translateY(-50%);
+		font-size: 1rem;
+	}
 
-		.stats-bar {
-			gap: 20px;
-		}
+	.search-input {
+		width: 90%;
+		padding: 14px 16px 14px 48px;
+		background: var(--surface);
+		border: 1px solid var(--border);
+		border-radius: 12px;
+		color: var(--text);
+		font-size: 1rem;
+		outline: none;
+		transition: border-color 0.2s ease;
+	}
 
-		.stat-number {
+	.search-input::placeholder {
+		color: var(--text-muted);
+	}
+
+	.search-input:focus {
+		border-color: var(--primary);
+	}
+
+	.filter-select {
+		padding: 14px 20px;
+		background: var(--surface);
+		border: 1px solid var(--border);
+		border-radius: 12px;
+		color: var(--text);
+		font-size: 1rem;
+		cursor: pointer;
+		outline: none;
+		min-width: 150px;
+	}
+
+	.filter-select:focus {
+		border-color: var(--primary);
+	}
+
+	.events-grid {
+		display: grid;
+		grid-template-columns: repeat(auto-fill, minmax(340px, 1fr));
+		gap: 20px;
+	}
+
+	.no-results {
+		text-align: center;
+		color: var(--text-muted);
+		padding: 60px 20px;
+		font-size: 1.1rem;
+	}
+
+	@media (max-width: 640px) {
+		.page-title {
 			font-size: 2rem;
+		}
+
+		.filter-section {
+			flex-direction: column;
+		}
+
+		.search-wrapper {
+			flex: none;
+			width: 100%;
+		}
+
+		.filter-select {
+			width: 100%;
+			min-width: auto;
+		}
+
+		.events-grid {
+			grid-template-columns: 1fr;
 		}
 	}
 </style>

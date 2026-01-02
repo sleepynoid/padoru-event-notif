@@ -1,62 +1,150 @@
-# Astro Starter Kit: Blog
+# Padoru Event Notif
 
-```sh
-pnpm create astro@latest -- --template blog
+Platform untuk menampilkan informasi event cosplay, anime, dan gaming di Indonesia. Data diambil otomatis dari Google Sheets komunitas.
+
+## 🚀 Quick Start
+
+### Prerequisites
+
+- Node.js 18+
+- pnpm (recommended) or npm
+
+### Installation
+
+```bash
+# Clone repository
+git clone https://github.com/sleepynoid/padoru-event-notif.git
+cd padoru-event-notif
+
+# Install dependencies
+pnpm install
 ```
 
-> 🧑‍🚀 **Seasoned astronaut?** Delete this file. Have fun!
+### Development
 
-Features:
+```bash
+# Start development server
+pnpm dev
+```
 
-- ✅ Minimal styling (make it your own!)
-- ✅ 100/100 Lighthouse performance
-- ✅ SEO-friendly with canonical URLs and OpenGraph data
-- ✅ Sitemap support
-- ✅ RSS Feed support
-- ✅ Markdown & MDX support
+Open [http://localhost:4321](http://localhost:4321) in your browser.
 
-## 🚀 Project Structure
+### Build
 
-Inside of your Astro project, you'll see the following folders and files:
+```bash
+# Build for production
+pnpm build
 
-```text
-├── public/
+# Preview production build
+pnpm preview
+```
+
+## 📦 Update Event Data
+
+Event data is fetched from a Google Sheets spreadsheet:
+
+```bash
+# Generate/update events from Google Sheets
+pnpm generate-events
+```
+
+This script:
+
+- Fetches latest data from the configured Google Sheet
+- Creates markdown files in `src/content/event-metadata/`
+- Compares with existing data and only updates changed events
+
+## 🔧 Configuration
+
+### Environment Variables
+
+Create a `.env` file based on `.env.example`:
+
+```bash
+cp .env.example .env
+```
+
+Required variables:
+
+- `GOOGLE_SHEET_URL` - URL of the Google Sheets containing event data
+
+### Site Configuration
+
+Edit `astro.config.mjs` to update:
+
+- `site` - Your production URL
+
+Edit `src/consts.ts` to update:
+
+- `SITE_TITLE` - Site title
+- `SITE_DESCRIPTION` - Site description
+
+## 📁 Project Structure
+
+```
 ├── src/
-│   ├── components/
-│   ├── content/
-│   ├── layouts/
-│   └── pages/
-├── astro.config.mjs
-├── README.md
-├── package.json
-└── tsconfig.json
+│   ├── components/       # Reusable Astro components
+│   │   ├── BaseHead.astro      # Meta tags & SEO
+│   │   ├── EventCalendar.astro # Interactive calendar
+│   │   ├── EventCard.astro     # Event card component
+│   │   └── Pagination.astro    # Pagination component
+│   ├── content/
+│   │   └── event-metadata/     # Generated event markdown files
+│   ├── layouts/
+│   │   └── BaseLayout.astro    # Main layout with header/footer
+│   ├── pages/
+│   │   ├── index.astro         # Homepage
+│   │   ├── about.astro         # About page
+│   │   ├── events/
+│   │   │   ├── index.astro     # Events listing
+│   │   │   └── [slug].astro    # Event detail page
+│   │   └── rss.xml.js          # RSS feed
+│   ├── scripts/
+│   │   └── generate-events.js  # Event data generator
+│   └── utils/
+│       ├── dateUtils.ts        # Date parsing utilities
+│       ├── eventUtils.ts       # Event filtering utilities
+│       └── googleSheets.ts     # Google Sheets reader
+├── .github/
+│   └── workflows/
+│       └── generate-events.yml # Auto-update events (daily)
+└── public/                     # Static assets
 ```
 
-Astro looks for `.astro` or `.md` files in the `src/pages/` directory. Each page is exposed as a route based on its file name.
+## ✨ Features
 
-There's nothing special about `src/components/`, but that's where we like to put any Astro/React/Vue/Svelte/Preact components.
+- 📅 **Interactive Calendar** - View events by month with navigation
+- 🔍 **Search & Filter** - Find events by name or city
+- 🌙 **Dark/Light Mode** - Toggle between themes
+- 📱 **Responsive** - Works on all devices
+- ⚡ **Fast** - Static site generation with Astro
+- 📡 **Auto-update** - GitHub Actions updates events daily
+- 📰 **RSS Feed** - Subscribe to event updates
 
-The `src/content/` directory contains "collections" of related Markdown and MDX documents. Use `getCollection()` to retrieve posts from `src/content/blog/`, and type-check your frontmatter using an optional schema. See [Astro's Content Collections docs](https://docs.astro.build/en/guides/content-collections/) to learn more.
+## 🛠 Tech Stack
 
-Any static assets, like images, can be placed in the `public/` directory.
+- [Astro](https://astro.build/) - Static site generator
+- [TypeScript](https://www.typescriptlang.org/) - Type safety
+- [PapaParse](https://www.papaparse.com/) - CSV parsing
+- [Sharp](https://sharp.pixelplumbing.com/) - Image optimization
 
-## 🧞 Commands
+## 📝 Commands
 
-All commands are run from the root of the project, from a terminal:
+| Command | Action |
+|---------|--------|
+| `pnpm dev` | Start development server at `localhost:4321` |
+| `pnpm build` | Build production site to `./dist/` |
+| `pnpm preview` | Preview production build locally |
+| `pnpm generate-events` | Update events from Google Sheets |
 
-| Command                   | Action                                           |
-| :------------------------ | :----------------------------------------------- |
-| `pnpm install`             | Installs dependencies                            |
-| `pnpm dev`             | Starts local dev server at `localhost:4321`      |
-| `pnpm build`           | Build your production site to `./dist/`          |
-| `pnpm preview`         | Preview your build locally, before deploying     |
-| `pnpm astro ...`       | Run CLI commands like `astro add`, `astro check` |
-| `pnpm astro -- --help` | Get help using the Astro CLI                     |
+## 🤝 Contributing
 
-## 👀 Want to learn more?
+1. Fork the repository
+2. Create a feature branch (`git checkout -b feature/amazing-feature`)
+3. Commit your changes (`git commit -m 'Add amazing feature'`)
+4. Push to the branch (`git push origin feature/amazing-feature`)
+5. Open a Pull Request
 
-Check out [our documentation](https://docs.astro.build) or jump into our [Discord server](https://astro.build/chat).
+## 📄 License
 
-## Credit
-
-This theme is based off of the lovely [Bear Blog](https://github.com/HermanMartinus/bearblog/).
+This project is open source and available under the [MIT License](LICENSE).

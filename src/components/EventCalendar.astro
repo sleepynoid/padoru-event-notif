@@ -1,0 +1,457 @@
+---
+import type { CollectionEntry } from 'astro:content';
+import { parseEventDate } from '../utils/dateUtils';
+
+interface Props {
+	events: CollectionEntry<'eventMetadata'>[];
+	currentMonth?: Date;
+}
+
+const { events, currentMonth = new Date() } = Astro.props;
+
+// Get current month details
+const year = currentMonth.getFullYear();
+const month = currentMonth.getMonth();
+const firstDay = new Date(year, month, 1);
+const lastDay = new Date(year, month + 1, 0);
+const daysInMonth = lastDay.getDate();
+const startingDayOfWeek = firstDay.getDay();
+
+// Get month name
+const monthNames = ['January', 'February', 'March', 'April', 'May', 'June',
+	'July', 'August', 'September', 'October', 'November', 'December'];
+const monthName = monthNames[month];
+
+// Create map of events by day
+const eventsByDay = new Map<number, CollectionEntry<'eventMetadata'>[]>();
+events.forEach(event => {
+	const eventDate = parseEventDate(event.data.tanggal);
+	if (eventDate && eventDate.getMonth() === month && eventDate.getFullYear() === year) {
+		const day = eventDate.getDate();
+		if (!eventsByDay.has(day)) {
+			eventsByDay.set(day, []);
+		}
+		eventsByDay.get(day)!.push(event);
+	}
+});
+
+// Generate calendar days with event data
+const calendarDays: { day: number | null; events: any[] }[] = [];
+// Add empty slots for days before the first day of the month
+for (let i = 0; i < startingDayOfWeek; i++) {
+	calendarDays.push({ day: null, events: [] });
+}
+// Add the days of the month
+for (let day = 1; day <= daysInMonth; day++) {
+	const dayEvents = eventsByDay.get(day) || [];
+	calendarDays.push({ 
+		day, 
+		events: dayEvents.map(e => ({
+			id: e.id,
+			namaAcara: e.data.namaAcara,
+			lokasi: e.data.lokasi,
+			jam: e.data.jam,
+			linkAcara: e.data.linkAcara
+		}))
+	});
+}
+
+const today = new Date();
+const isCurrentMonth = today.getMonth() === month && today.getFullYear() === year;
+const todayDate = today.getDate();
+
+const dayNames = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
+---
+
+<div class="calendar-container">
+	<div class="calendar-header">
+		<h3 class="calendar-title">📅 {monthName} {year}</h3>
+		<span class="event-count">{eventsByDay.size} days with events</span>
+	</div>
+	
+	<div class="calendar-grid">
+		{dayNames.map(day => (
+			<div class="calendar-day-header">{day}</div>
+		))}
+		
+		{calendarDays.map(({ day, events: dayEvents }) => {
+			if (day === null) {
+				return <div class="calendar-day empty"></div>;
+			}
+			
+			const hasEvents = dayEvents.length > 0;
+			const isToday = isCurrentMonth && day === todayDate;
+			
+			return (
+				<div 
+					class:list={["calendar-day", { "has-events": hasEvents, "is-today": isToday }]}
+					data-day={day}
+					data-events={JSON.stringify(dayEvents)}
+				>
+					<span class="day-number">{day}</span>
+					{hasEvents && (
+						<div class="event-dots">
+							{dayEvents.slice(0, 3).map(() => (
+								<span class="event-dot"></span>
+							))}
+							{dayEvents.length > 3 && <span class="more-events">+{dayEvents.length - 3}</span>}
+						</div>
+					)}
+				</div>
+			);
+		})}
+	</div>
+	
+	{eventsByDay.size > 0 && (
+		<div class="calendar-legend">
+			<span class="legend-dot"></span>
+			<span class="legend-text">Click on highlighted days to see events</span>
+		</div>
+	)}
+</div>
+
+<!-- Event Popup Modal -->
+<div class="event-popup" id="event-popup">
+	<div class="popup-content">
+		<div class="popup-header">
+			<h4 class="popup-title" id="popup-title">Events on Date</h4>
+			<button class="popup-close" id="popup-close">✕</button>
+		</div>
+		<div class="popup-body" id="popup-body">
+			<!-- Events will be inserted here -->
+		</div>
+	</div>
+</div>
+
+<script>
+	const calendarDays = document.querySelectorAll('.calendar-day.has-events');
+	const popup = document.getElementById('event-popup');
+	const popupTitle = document.getElementById('popup-title');
+	const popupBody = document.getElementById('popup-body');
+	const popupClose = document.getElementById('popup-close');
+
+	calendarDays.forEach(dayEl => {
+		dayEl.addEventListener('click', () => {
+			const day = dayEl.getAttribute('data-day');
+			const eventsData = dayEl.getAttribute('data-events');
+			
+			if (eventsData) {
+				const events = JSON.parse(eventsData);
+				
+				if (popupTitle) {
+					popupTitle.textContent = `Events on ${day} January 2026`;
+				}
+				
+				if (popupBody) {
+					popupBody.innerHTML = events.map((event: any) => `
+						<a href="${event.linkAcara}" target="_blank" class="popup-event">
+							<div class="popup-event-name">${event.namaAcara}</div>
+							<div class="popup-event-details">
+								<span>📍 ${event.lokasi}</span>
+								${event.jam ? `<span>🕐 ${event.jam}</span>` : ''}
+							</div>
+						</a>
+					`).join('');
+				}
+				
+				popup?.classList.add('show');
+			}
+		});
+	});
+
+	popupClose?.addEventListener('click', () => {
+		popup?.classList.remove('show');
+	});
+
+	popup?.addEventListener('click', (e) => {
+		if (e.target === popup) {
+			popup.classList.remove('show');
+		}
+	});
+
+	document.addEventListener('keydown', (e) => {
+		if (e.key === 'Escape') {
+			popup?.classList.remove('show');
+		}
+	});
+</script>
+
+<style>
+	.calendar-container {
+		background: var(--surface);
+		border: 1px solid var(--border);
+		border-radius: 16px;
+		padding: 24px;
+		margin-bottom: 32px;
+	}
+
+	.calendar-header {
+		display: flex;
+		justify-content: space-between;
+		align-items: center;
+		margin-bottom: 20px;
+		flex-wrap: wrap;
+		gap: 12px;
+	}
+
+	.calendar-title {
+		font-size: 1.25rem;
+		font-weight: 600;
+		margin: 0;
+	}
+
+	.event-count {
+		color: var(--text-muted);
+		font-size: 0.875rem;
+	}
+
+	.calendar-grid {
+		display: grid;
+		grid-template-columns: repeat(7, 1fr);
+		gap: 4px;
+	}
+
+	.calendar-day-header {
+		text-align: center;
+		font-size: 0.75rem;
+		font-weight: 600;
+		color: var(--text-muted);
+		padding: 8px 0;
+		text-transform: uppercase;
+	}
+
+	.calendar-day {
+		aspect-ratio: 1;
+		display: flex;
+		flex-direction: column;
+		align-items: center;
+		justify-content: center;
+		padding: 4px;
+		border-radius: 8px;
+		position: relative;
+		cursor: default;
+		transition: all 0.2s ease;
+		min-height: 44px;
+	}
+
+	.calendar-day.empty {
+		background: transparent;
+	}
+
+	.calendar-day:not(.empty):hover {
+		background: var(--surface-light);
+	}
+
+	.calendar-day.has-events {
+		background: rgba(99, 102, 241, 0.1);
+		cursor: pointer;
+	}
+
+	.calendar-day.has-events:hover {
+		background: rgba(99, 102, 241, 0.25);
+		transform: scale(1.05);
+	}
+
+	.calendar-day.is-today {
+		border: 2px solid var(--primary);
+	}
+
+	.calendar-day.is-today .day-number {
+		font-weight: 700;
+		color: var(--primary);
+	}
+
+	.day-number {
+		font-size: 0.9rem;
+		font-weight: 500;
+	}
+
+	.event-dots {
+		display: flex;
+		gap: 2px;
+		margin-top: 4px;
+		align-items: center;
+	}
+
+	.event-dot {
+		width: 6px;
+		height: 6px;
+		background: var(--primary);
+		border-radius: 50%;
+	}
+
+	.more-events {
+		font-size: 0.6rem;
+		color: var(--primary);
+		font-weight: 600;
+	}
+
+	.calendar-legend {
+		display: flex;
+		align-items: center;
+		gap: 8px;
+		margin-top: 16px;
+		padding-top: 16px;
+		border-top: 1px solid var(--border);
+	}
+
+	.legend-dot {
+		width: 10px;
+		height: 10px;
+		background: var(--primary);
+		border-radius: 50%;
+	}
+
+	.legend-text {
+		font-size: 0.8rem;
+		color: var(--text-muted);
+	}
+
+	/* Event Popup Modal */
+	.event-popup {
+		display: none;
+		position: fixed;
+		top: 0;
+		left: 0;
+		right: 0;
+		bottom: 0;
+		background: rgba(0, 0, 0, 0.7);
+		z-index: 1000;
+		align-items: center;
+		justify-content: center;
+		padding: 20px;
+	}
+
+	.event-popup.show {
+		display: flex;
+	}
+
+	.popup-content {
+		background: var(--surface);
+		border: 1px solid var(--border);
+		border-radius: 16px;
+		max-width: 480px;
+		width: 100%;
+		max-height: 80vh;
+		overflow: hidden;
+		display: flex;
+		flex-direction: column;
+		animation: popupIn 0.2s ease;
+	}
+
+	@keyframes popupIn {
+		from {
+			opacity: 0;
+			transform: scale(0.95) translateY(-10px);
+		}
+		to {
+			opacity: 1;
+			transform: scale(1) translateY(0);
+		}
+	}
+
+	.popup-header {
+		display: flex;
+		justify-content: space-between;
+		align-items: center;
+		padding: 20px 24px;
+		border-bottom: 1px solid var(--border);
+	}
+
+	.popup-title {
+		font-size: 1.1rem;
+		font-weight: 600;
+		margin: 0;
+	}
+
+	.popup-close {
+		background: var(--surface-light);
+		border: 1px solid var(--border);
+		color: var(--text);
+		width: 32px;
+		height: 32px;
+		border-radius: 8px;
+		cursor: pointer;
+		font-size: 1rem;
+		display: flex;
+		align-items: center;
+		justify-content: center;
+		transition: all 0.2s ease;
+	}
+
+	.popup-close:hover {
+		background: var(--primary);
+		color: white;
+		border-color: var(--primary);
+	}
+
+	.popup-body {
+		padding: 16px 24px 24px;
+		overflow-y: auto;
+		display: flex;
+		flex-direction: column;
+		gap: 12px;
+	}
+
+	.popup-event {
+		display: block;
+		background: var(--surface-light);
+		border: 1px solid var(--border);
+		border-radius: 12px;
+		padding: 16px;
+		text-decoration: none;
+		color: inherit;
+		transition: all 0.2s ease;
+	}
+
+	.popup-event:hover {
+		border-color: var(--primary);
+		transform: translateX(4px);
+	}
+
+	.popup-event-name {
+		font-weight: 600;
+		font-size: 1rem;
+		margin-bottom: 8px;
+		color: var(--text);
+	}
+
+	.popup-event-details {
+		display: flex;
+		flex-wrap: wrap;
+		gap: 12px;
+		font-size: 0.85rem;
+		color: var(--text-muted);
+	}
+
+	@media (max-width: 480px) {
+		.calendar-container {
+			padding: 16px;
+		}
+
+		.calendar-day {
+			min-height: 36px;
+		}
+
+		.day-number {
+			font-size: 0.8rem;
+		}
+
+		.event-dot {
+			width: 4px;
+			height: 4px;
+		}
+
+		.popup-content {
+			max-height: 90vh;
+		}
+
+		.popup-header {
+			padding: 16px 20px;
+		}
+
+		.popup-body {
+			padding: 12px 20px 20px;
+		}
+	}
+</style>

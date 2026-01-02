@@ -2,6 +2,7 @@
 import { getCollection } from 'astro:content';
 import BaseLayout from '../../layouts/BaseLayout.astro';
 import EventCard from '../../components/EventCard.astro';
+import EventCalendar from '../../components/EventCalendar.astro';
 import { sortByDate, getUniqueAreas } from '../../utils/eventUtils';
 
 const allEvents = await getCollection('eventMetadata');
@@ -16,6 +17,8 @@ const uniqueAreas = getUniqueAreas(events);
 			{events.length} events tersedia di {uniqueAreas.length} kota
 		</p>
 	</section>
+
+	<EventCalendar events={allEvents} />
 
 	<section class="filter-section">
 		<div class="search-wrapper">

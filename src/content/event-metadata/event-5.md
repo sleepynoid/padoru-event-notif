@@ -1,9 +1,9 @@
 ---
-tanggal: "20 Sep 2025"
+tanggal: "29 Nov 2025"
 jam: ""
-lokasi: "Revo Mall, Bekasi"
-area: "Bekasi"
-namaAcara: "Otaku Anison Story"
-lastUpdate: "04-09-2025 00:00"
-linkAcara: ""
+lokasi: "Mall Ciputra, Citra Raya"
+area: "Tangerang"
+namaAcara: "APRESIASI KREASI GEMILANG 2025 : COSWALK COMPETITION"
+lastUpdate: "24-11-2025 16:17"
+linkAcara: "https://www.instagram.com/p/DQ0kb2XEWeG/"
 ---

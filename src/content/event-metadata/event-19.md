@@ -1,9 +1,9 @@
 ---
-tanggal: "12 Okt 2025"
+tanggal: "13 Des 2025"
 jam: ""
-lokasi: "Majapahit Hall Museum Mandiri, Jakarta"
-area: "Jakarta"
-namaAcara: "AniLights Vol.2"
-lastUpdate: "16-09-2025 12:19"
-linkAcara: "https://www.facebook.com/share/p/17C8ZAfWWa/"
+lokasi: "Tunjungan Plaza 3 Convention Hall"
+area: "Surabaya"
+namaAcara: "Cosplay Creator & Community Convention (C4)"
+lastUpdate: "24-11-2025 16:51"
+linkAcara: "https://www.instagram.com/c4_surabaya/"
 ---

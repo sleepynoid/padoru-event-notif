@@ -1,9 +1,9 @@
 ---
-tanggal: "05 Okt 2025"
+tanggal: "12 Des 2025"
 jam: ""
-lokasi: "ICE BSD City"
-area: "Tangerang"
-namaAcara: "IGX - INDONESIA GAME EXPO"
-lastUpdate: "24-04-2025 23:31"
-linkAcara: "https://www.instagram.com/indonesiagameexpo/"
+lokasi: "JIEXPO KEMAYORAN"
+area: "Jakarta"
+namaAcara: "Motion Ime Festival ⛩️  [ MHT is Joining ] "
+lastUpdate: "24-11-2025 15:38"
+linkAcara: "https://www.instagram.com/motionimefest/"
 ---

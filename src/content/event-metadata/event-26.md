@@ -1,9 +1,9 @@
 ---
-tanggal: "18 Okt 2025"
+tanggal: "28 Des 2025"
 jam: ""
-lokasi: "Q SQUARE LIFESTYLE PARK BOGOR"
-area: "Bogor"
-namaAcara: "Q'SQUARE HALLOWEEN 2025"
-lastUpdate: "16-09-2025 13:33"
-linkAcara: "https://www.facebook.com/photo/?fbid=25088858397378424&set=pcb.10164346434533836"
+lokasi: "Green Pramuka Square "
+area: "Jakarta"
+namaAcara: "Christmas Wonderland"
+lastUpdate: "24-11-2025 16:14"
+linkAcara: "https://www.instagram.com/p/DRQueDgEiVP/?img_index=1"
 ---

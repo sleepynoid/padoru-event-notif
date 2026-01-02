@@ -1,9 +1,9 @@
 ---
-tanggal: "04 Okt 2025"
+tanggal: "07 Des 2025"
 jam: ""
-lokasi: "ICE BSD City"
-area: "Tangerang"
-namaAcara: "IGX - INDONESIA GAME EXPO"
-lastUpdate: "24-04-2025 23:31"
-linkAcara: "https://www.instagram.com/indonesiagameexpo/"
+lokasi: "M Bloc Space"
+area: "Jakarta"
+namaAcara: "Festival Komik Shikisai "
+lastUpdate: "24-11-2025 16:35"
+linkAcara: "https://www.instagram.com/shikisai.id/"
 ---

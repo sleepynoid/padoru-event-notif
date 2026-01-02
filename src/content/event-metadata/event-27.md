@@ -1,9 +1,10 @@
 ---
-tanggal: "19 Okt 2025"
+tanggal: "28 Des 2025"
 jam: ""
-lokasi: "Jogja Expo Center"
-area: "Yogyakarta"
-namaAcara: "Comic Paradise (Comipara) 5"
-lastUpdate: "17-04-2025 23:52"
-linkAcara: "https://www.comipara.com/"
+lokasi: "Cibubur Junction
+"
+area: "Cibubur"
+namaAcara: "Subarashii Matsuri"
+lastUpdate: "24-11-2025 16:15"
+linkAcara: "https://www.instagram.com/p/DROgTrGj0he/"
 ---

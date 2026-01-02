@@ -2,15 +2,38 @@ import { getCollection } from 'astro:content';
 import rss from '@astrojs/rss';
 import { SITE_DESCRIPTION, SITE_TITLE } from '../consts';
 
+function parseDate(dateStr) {
+	if (!dateStr) return new Date();
+
+	const monthMap = {
+		'Jan': 0, 'Feb': 1, 'Mar': 2, 'Apr': 3, 'Mei': 4, 'May': 4, 'Jun': 5,
+		'Jul': 6, 'Agu': 7, 'Ags': 7, 'Aug': 7, 'Sep': 8, 'Okt': 9, 'Oct': 9,
+		'Nov': 10, 'Des': 11, 'Dec': 11
+	};
+
+	const match = dateStr.match(/(\d{1,2})\s+(\w{3})\s+(\d{4})/);
+	if (match) {
+		const [, day, month, year] = match;
+		const monthNum = monthMap[month];
+		if (monthNum !== undefined) {
+			return new Date(parseInt(year), monthNum, parseInt(day));
+		}
+	}
+
+	return new Date();
+}
+
 export async function GET(context) {
-	const posts = await getCollection('blog');
+	const events = await getCollection('eventMetadata');
 	return rss({
 		title: SITE_TITLE,
 		description: SITE_DESCRIPTION,
 		site: context.site,
-		items: posts.map((post) => ({
-			...post.data,
-			link: `/blog/${post.id}/`,
+		items: events.map((event) => ({
+			title: event.data.namaAcara,
+			pubDate: parseDate(event.data.tanggal),
+			description: `${event.data.namaAcara} - ${event.data.lokasi}, ${event.data.area} pada ${event.data.tanggal}`,
+			link: `/events/event-${event.id.replace('event-', '')}/`,
 		})),
 	});
 }

@@ -1,9 +1,9 @@
 ---
-tanggal: "18 Okt 2025"
+tanggal: "26 Des 2025"
 jam: ""
-lokasi: "Jogja Expo Center"
-area: "Yogyakarta"
-namaAcara: "Comic Paradise (Comipara) 5"
-lastUpdate: "17-04-2025 23:52"
-linkAcara: "https://www.comipara.com/"
+lokasi: "Green Pramuka Square "
+area: "Jakarta"
+namaAcara: "Christmas Wonderland"
+lastUpdate: "24-11-2025 16:14"
+linkAcara: "https://www.instagram.com/p/DRQueDgEiVP/?img_index=1"
 ---

@@ -1,9 +1,9 @@
 ---
-tanggal: "19 Okt 2025"
+tanggal: "11 Jan 2026"
 jam: ""
-lokasi: "CIPUTRA WORLD SURABAYA (Linear & Void Atrium, GF)"
-area: "Surabaya"
-namaAcara: "THE 1st SURABAYA TOYS AND COMICS FAIR 2025"
-lastUpdate: "16-09-2025 12:17"
-linkAcara: "https://www.facebook.com/share/p/1MihB3EAPA/"
+lokasi: "Unimas District, Waru"
+area: "Sidoarjo"
+namaAcara: "MINNA NO MUSUBI VOL. 3"
+lastUpdate: "24-11-2025 16:49"
+linkAcara: "https://www.instagram.com/p/DRTrdxgk5en/"
 ---

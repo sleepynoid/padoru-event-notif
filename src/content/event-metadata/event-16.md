@@ -1,9 +1,9 @@
 ---
-tanggal: "05 Okt 2025"
-jam: "13:00"
-lokasi: "Tangcity Mall Tangerang"
-area: "Tangerang"
-namaAcara: "TANGCITY COSPLAY HOLIC"
-lastUpdate: "10-09-2025 00:00"
-linkAcara: "https://www.instagram.com/p/DOaW2fyEuXt/"
+tanggal: "07 Des 2025"
+jam: ""
+lokasi: "Transmart Sidoarjo"
+area: "Sidoarjo"
+namaAcara: "Amai Fest"
+lastUpdate: "24-11-2025 16:51"
+linkAcara: "https://www.instagram.com/p/DRFG4KsExLt/?img_index=1"
 ---

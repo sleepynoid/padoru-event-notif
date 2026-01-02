@@ -1,9 +1,9 @@
 ---
-tanggal: "21 Sep 2025"
+tanggal: "06 Des 2025"
 jam: ""
-lokasi: "Mall Teraskota BSD"
+lokasi: "MZ Floor SOUTH78 - Gading Serpong"
 area: "Tangerang"
-namaAcara: "AMiEFEST 🟠⛩"
-lastUpdate: "16-09-2025 12:07"
-linkAcara: "https://www.facebook.com/share/p/1CMrWcdwNX/"
+namaAcara: "KAWAII WONDERVERSE: The Festival of Japan & Toys"
+lastUpdate: "24-11-2025 16:13"
+linkAcara: "https://www.instagram.com/p/DQ36MsskkON/"
 ---

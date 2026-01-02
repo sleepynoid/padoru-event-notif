@@ -1,9 +1,9 @@
 ---
-tanggal: "28 Sep 2025"
+tanggal: "07 Des 2025"
 jam: ""
-lokasi: "Area GBK Senayan, Jakarta Pusat"
-area: "Jakarta Pusat"
-namaAcara: "Jak-Japan Matsuri 2025"
-lastUpdate: "17-04-2025 15:33"
-linkAcara: "https://www.facebook.com/share/p/15Tda9v6kr/"
+lokasi: "Lippo Mall Nusantara"
+area: "Jakarta"
+namaAcara: "Dreamers Festival 2025: COSWALK COMPETITION"
+lastUpdate: "24-11-2025 16:33"
+linkAcara: "https://www.instagram.com/p/DRMcqnoEouh/?img_index=1"
 ---

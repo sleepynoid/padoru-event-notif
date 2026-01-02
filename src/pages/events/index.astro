@@ -1,100 +1,169 @@
 ---
 import { getCollection } from 'astro:content';
-import BaseHead from '../../components/BaseHead.astro';
-import Footer from '../../components/Footer.astro';
-import Header from '../../components/Header.astro';
-import { SITE_DESCRIPTION, SITE_TITLE } from '../../consts';
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import EventCard from '../../components/EventCard.astro';
+import EventFilter from '../../components/EventFilter.astro';
+import { sortByDate, getUniqueAreas } from '../../utils/eventUtils';
 
-const events = (await getCollection('eventMetadata')).sort((a, b) => {
-	// Parse date strings and compare (newest first)
-	const dateA = new Date(a.data.tanggal.replace(/(\d{1,2}) (\w{3}) (\d{4})/, '$2 $1, $3'));
-	const dateB = new Date(b.data.tanggal.replace(/(\d{1,2}) (\w{3}) (\d{4})/, '$2 $1, $3'));
-	return dateB.getTime() - dateA.getTime();
-});
+const allEvents = await getCollection('eventMetadata');
+const events = sortByDate(allEvents, 'desc');
+const uniqueAreas = getUniqueAreas(events);
 ---
 
-<!doctype html>
-<html lang="en">
-	<head>
-		<BaseHead title={`${SITE_TITLE} - Events`} description="List of events" />
-		<link rel="stylesheet" href="src/styles/events.css" />
-	</head>
-	<body>
-		<!-- Custom Header -->
-		<header class="custom-header">
-			<nav class="custom-nav">
-				<a href="/" class="brand-logo">Padoru Event Notif</a>
-				<div class="nav-links">
-					<a href="/" class="nav-link">Home</a>
-					<a href="/events" class="nav-link active">Events</a>
-					<a href="/about" class="nav-link">About</a>
-				</div>
-			</nav>
-		</header>
-		<main>
-			<section class="hero-section">
-				<h1 class="hero-title">🎪 Upcoming Events</h1>
-				<p class="hero-subtitle">
-					Discover the latest cosplay events, gaming conventions, and entertainment gatherings
-					in Indonesia. Stay updated with real-time information from community sources.
-				</p>
-				<div class="stats-bar">
-					<div class="stat-item">
-						<span class="stat-number">{events.length}</span>
-						<span class="stat-label">Events</span>
-					</div>
-					<div class="stat-item">
-						<span class="stat-number">{Array.from(new Set(events.map(e => e.data.area))).length}</span>
-						<span class="stat-label">Cities</span>
-					</div>
-					<div class="stat-item">
-						<span class="stat-number">📅</span>
-						<span class="stat-label">Updated Daily</span>
-					</div>
-				</div>
-			</section>
-
-			<section class="events-section">
-				<div class="section-header">
-					<h2 class="section-title">All Events</h2>
-					<p class="section-subtitle">Sorted by date - newest first</p>
-				</div>
-
-				<ul class="events-grid">
-					{
-						events.map((event) => (
-							<li class="card horizontal hoverable" onclick={`window.open('${event.data.linkAcara}', '_blank')`} style="cursor: pointer;">
-								<div class="card-stacked">
-									<div class="card-content">
-										<p class="tgl">{event.data.tanggal}</p>
-										<h3 class="title">{event.data.namaAcara}</h3>
-										<p class="subtitle">{event.data.lokasi} • {event.data.area}</p>
-										{event.data.jam && <p class="subtitle">Time: {event.data.jam}</p>}
-										{/* <div class="chip truncate" style="background: linear-gradient(135deg, #219ebc, #8ecae6); color: #023047;">
-											🎭 Event
-										</div> */}
-									</div>
-								</div>
-								<div class="card-image valign-wrapper">
-									<div class="img waves-effect waves-light" style="background-image: url('/IMG_5027.JPG');">
-									</div>
-								</div>
-							</li>
-						))
-					}
-				</ul>
-			</section>
-		</main>
-		<!-- Custom Footer -->
-		<footer class="custom-footer">
-			<div class="footer-content">
-				<p class="footer-text">&copy; 2025 Padoru Event Notif. All rights reserved.</p>
-				<div class="footer-links">
-					<a href="/" class="footer-link">Home</a>
-					<a href="/events" class="footer-link">Events</a>
-					<a href="/about" class="footer-link">About</a>
-				</div>
+<BaseLayout title="Events | Padoru Event Notif" description="List of upcoming events" activeNav="events">
+	<section class="hero-section">
+		<h1 class="hero-title">🎪 Upcoming Events</h1>
+		<p class="hero-subtitle">
+			Discover the latest cosplay events, gaming conventions, and entertainment gatherings
+			in Indonesia. Stay updated with real-time information from community sources.
+		</p>
+		<div class="stats-bar">
+			<div class="stat-item">
+				<span class="stat-number">{events.length}</span>
+				<span class="stat-label">Events</span>
 			</div>
-		</footer>
-	</body>
-</html>
+			<div class="stat-item">
+				<span class="stat-number">{uniqueAreas.length}</span>
+				<span class="stat-label">Cities</span>
+			</div>
+			<div class="stat-item">
+				<span class="stat-number">📅</span>
+				<span class="stat-label">Updated Daily</span>
+			</div>
+		</div>
+	</section>
+
+	<EventFilter areas={uniqueAreas} />
+
+	<section class="events-section">
+		<div class="section-header">
+			<h2 class="section-title">All Events</h2>
+			<p class="section-subtitle">Sorted by date - newest first</p>
+		</div>
+
+		<div class="events-grid">
+			{
+				events.map((event) => (
+					<EventCard
+						tanggal={event.data.tanggal}
+						namaAcara={event.data.namaAcara}
+						lokasi={event.data.lokasi}
+						area={event.data.area}
+						jam={event.data.jam}
+						linkAcara={event.data.linkAcara}
+						lastUpdate={event.data.lastUpdate}
+					/>
+				))
+			}
+		</div>
+	</section>
+</BaseLayout>
+
+<style>
+	/* Hero Section */
+	.hero-section {
+		text-align: center;
+		margin-bottom: 40px;
+		padding: 60px 20px;
+		background: white;
+		border-radius: 16px;
+		box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+	}
+
+	.hero-title {
+		font-size: 3.5rem;
+		font-weight: 300;
+		color: #333;
+		margin-bottom: 20px;
+		background: linear-gradient(135deg, #023047, #219ebc);
+		-webkit-background-clip: text;
+		-webkit-text-fill-color: transparent;
+		background-clip: text;
+	}
+
+	.hero-subtitle {
+		font-size: 1.2rem;
+		color: #666;
+		margin-bottom: 40px;
+		line-height: 1.6;
+		max-width: 600px;
+		margin-left: auto;
+		margin-right: auto;
+	}
+
+	.stats-bar {
+		display: flex;
+		justify-content: center;
+		gap: 40px;
+		margin-top: 30px;
+	}
+
+	.stat-item {
+		text-align: center;
+	}
+
+	.stat-number {
+		display: block;
+		font-size: 2.5rem;
+		font-weight: 700;
+		color: #219ebc;
+		line-height: 1;
+	}
+
+	.stat-label {
+		display: block;
+		font-size: 0.9rem;
+		color: #666;
+		text-transform: uppercase;
+		letter-spacing: 1px;
+		margin-top: 5px;
+	}
+
+	/* Events Section */
+	.events-section {
+		margin-top: 0;
+	}
+
+	.section-header {
+		text-align: center;
+		margin-bottom: 30px;
+	}
+
+	.section-title {
+		font-size: 2.2rem;
+		font-weight: 400;
+		color: #333;
+		margin-bottom: 10px;
+	}
+
+	.section-subtitle {
+		font-size: 1rem;
+		color: #666;
+		margin: 0;
+	}
+
+	/* Events Grid */
+	.events-grid {
+		display: flex;
+		flex-direction: column;
+		gap: 16px;
+	}
+
+	@media (max-width: 768px) {
+		.hero-section {
+			padding: 40px 20px;
+		}
+
+		.hero-title {
+			font-size: 2.5rem;
+		}
+
+		.stats-bar {
+			gap: 20px;
+		}
+
+		.stat-number {
+			font-size: 2rem;
+		}
+	}
+</style>

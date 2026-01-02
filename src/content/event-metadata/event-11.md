@@ -1,9 +1,9 @@
 ---
-tanggal: "21 Sep 2025"
+tanggal: "06 Des 2025"
 jam: ""
-lokasi: "Revo Mall, Bekasi"
-area: "Bekasi"
-namaAcara: "Otaku Anison Story"
-lastUpdate: "04-09-2025 00:00"
-linkAcara: ""
+lokasi: "Mall KCS, Kalibata City Square"
+area: "Jakarta"
+namaAcara: "COSDUB SHOWDOWN (Coswalk Competition + Live Dubbing)"
+lastUpdate: "24-11-2025 16:37"
+linkAcara: "https://www.instagram.com/p/DRBwHJgkTKo/?img_index=1"
 ---

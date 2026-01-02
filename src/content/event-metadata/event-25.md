@@ -1,9 +1,10 @@
 ---
-tanggal: "18 Okt 2025"
+tanggal: "27 Des 2025"
 jam: ""
-lokasi: "Stadion Utama GBK"
-area: "Jakarta Pusat"
-namaAcara: "Cosplay Expo 2025"
-lastUpdate: "10-09-2025 00:00"
-linkAcara: "https://www.instagram.com/cosplayexpo.id"
+lokasi: "Cibubur Junction
+"
+area: "Cibubur"
+namaAcara: "Subarashii Matsuri"
+lastUpdate: "24-11-2025 16:15"
+linkAcara: "https://www.instagram.com/p/DROgTrGj0he/"
 ---

@@ -16,8 +16,24 @@ const {
 ---
 
 <!doctype html>
-<html lang="en" data-theme="dark">
+<html lang="en">
 	<head>
+		<script is:inline>
+			// Immediately set theme to prevent flash - runs synchronously before render
+			(function() {
+				try {
+					const savedTheme = localStorage.getItem('theme');
+					if (savedTheme) {
+						document.documentElement.setAttribute('data-theme', savedTheme);
+					} else {
+						const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+						document.documentElement.setAttribute('data-theme', prefersDark ? 'dark' : 'light');
+					}
+				} catch (e) {
+					document.documentElement.setAttribute('data-theme', 'light');
+				}
+			})();
+		</script>
 		<BaseHead title={title} description={description} />
 		<link rel="preconnect" href="https://fonts.googleapis.com">
 		<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -347,10 +363,6 @@ const {
 			// Theme Toggle
 			const themeToggle = document.getElementById('theme-toggle');
 			const html = document.documentElement;
-			
-			// Check for saved theme preference or default to dark
-			const savedTheme = localStorage.getItem('theme') || 'light';
-			html.setAttribute('data-theme', savedTheme);
 
 			themeToggle?.addEventListener('click', () => {
 				const currentTheme = html.getAttribute('data-theme');

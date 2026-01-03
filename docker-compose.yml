@@ -1,8 +1,6 @@
 services:
   padoru-event-notif:
-    build:
-      context: .
-      dockerfile: Dockerfile
+    image: sleepynoid/padoru-event-notif:latest
     container_name: padoru-event-notif
     restart: unless-stopped
     ports:
@@ -44,5 +42,28 @@ services:
       start_period: 10s
 
     labels:
+      - "com.centurylinklabs.watchtower.enable=true"
       - "app=padoru-event-notif"
       - "environment=production"
+
+  # Watchtower - Auto-update containers when new images are pushed
+  watchtower:
+    image: containrrr/watchtower
+    container_name: watchtower
+    restart: unless-stopped
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+    environment:
+      - WATCHTOWER_CLEANUP=true
+      - WATCHTOWER_POLL_INTERVAL=3600 # Check every hour
+      - WATCHTOWER_LABEL_ENABLE=true # Only update labeled containers
+      - WATCHTOWER_NOTIFICATIONS=shoutrrr # Optional: notifications
+      - TZ=Asia/Jakarta
+    command: --interval 3600
+
+    # Security
+    security_opt:
+      - no-new-privileges:true
+
+    labels:
+      - "app=watchtower"

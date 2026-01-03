@@ -1,9 +1,9 @@
 ---
-tanggal: "16 Mei 2026"
+tanggal: "04 Jan 2026"
 jam: ""
-lokasi: "Taman Lapangan Banteng, Jakarta"
-area: "Jakarta"
-namaAcara: "Connect Japan Djakarta Ennichi"
-lastUpdate: "19-11-2025 17:19"
-linkAcara: "https://www.facebook.com/photo/?fbid=10231066491154407&set=gm.10164640628348836&idorvanity=251875943835&__cft__[0]=AZUptWO5yOM83C7c_5mGw7gJAOLUBFhMBgqS2wnTWcN7bCCFEtepdKXV314yu7yYajgSkZQI4EwZ2XiMpNxH50goQ0c8qJTTsOmwm3OiS7rHC8cVxYdqwXZ564U1DUQcL2YcBumZ3D1bRqGJsfST80SZB9ptYgRoswEzwycqZP3CN_FlDZg_7K6W7c0CZl4CrfU&__tn__=EH-R"
+lokasi: "GOR Segiri Indoor, Samarinda, Kalimantan Timur"
+area: "Samarinda"
+namaAcara: "Japan Project Chapter 03~ Tokyo District "
+lastUpdate: "03-01-2026 09:16"
+linkAcara: "https://www.facebook.com/photo/?fbid=10231635287533961&set=pcb.10164851993973836&__cft__[0]=AZZw8Jm3Ksg3SUgsTKtmXCARl2T3q3ySzAp_qtZYLF3EEr4QuQ1KGx09uOwFqM8NGtIMEUrkM1ZH8Xsr1LMp_DP4hWUTkwWK9zXM-09MLDa_3SN6Y0cDs9i1iWoz81PHp-PLT0AYRZl8BLsV40dOzBXVEHXTkPFJXEpJMKqouLygqK12noD8ts1KD6w3ghaOatE&__tn__=*b0H-R"
 ---

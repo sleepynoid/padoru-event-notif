@@ -1,5 +1,5 @@
 ---
-tanggal: "04 Jan 2026"
+tanggal: "18 Jan 2026"
 jam: ""
 lokasi: "Revo Mall, Bekasi (lantai UG)"
 area: "Bekasi"

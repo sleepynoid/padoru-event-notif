@@ -37,7 +37,7 @@ jobs:
       - name: Generate events from Google Sheets
         env:
           GOOGLE_SHEET_URL: ${{ secrets.GOOGLE_SHEET_URL }}
-        run: pnpm generate-events
+        run: node src/scripts/generate-events.js
 
       - name: Commit event changes
         uses: stefanzweifel/git-auto-commit-action@v5

@@ -1,9 +1,9 @@
 ---
-tanggal: "07 Des 2025"
+tanggal: "18 Jan 2026"
 jam: ""
-lokasi: "Lippo Mall Nusantara"
-area: "Jakarta"
-namaAcara: "Dreamers Festival 2025: COSWALK COMPETITION"
-lastUpdate: "24-11-2025 16:33"
-linkAcara: "https://www.instagram.com/p/DRMcqnoEouh/?img_index=1"
+lokasi: "Braga8, Bandung"
+area: "Bandung"
+namaAcara: "Shinnen Party (Day 2  "
+lastUpdate: "03-01-2026 09:22"
+linkAcara: "https://www.facebook.com/photo/?fbid=10231634926844944&set=gm.10164851857138836&idorvanity=251875943835&__cft__[0]=AZY9iI3g1t7DGll6O7_irRt2beNWN_M1oOb_jez84NVZjOZyeUYLLRE19VSW9_wbUYppMuFnnFIsOz0D7UKhZR0oCrTZlZ6SRarqAlTyL-udoR3ZQOHgiCWc9mqNO4VUgNj0RFnn8amsV2n1kAAtT3wq3o4Mj8EBR9M5-hij9kCPgj2LqS2ahRXGyY5kkPFYk1I&__tn__=EH-R"
 ---

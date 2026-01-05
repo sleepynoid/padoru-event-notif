@@ -1,9 +1,9 @@
 ---
-tanggal: "29 Nov 2025"
+tanggal: "13 Des 2025"
 jam: ""
-lokasi: "Gajah Mada Plaza, Jakarta Pusat"
-area: "Jakarta"
-namaAcara: "Shiawase Festival ⛩️  [ MHT is Joining ]"
-lastUpdate: ""
-linkAcara: "https://www.instagram.com/p/DQd6EqkDwvH/?hl=en&img_index=1"
+lokasi: "Tunjungan Plaza 3 Convention Hall"
+area: "Surabaya"
+namaAcara: "Cosplay Creator & Community Convention (C4)"
+lastUpdate: "24-11-2025 16:51"
+linkAcara: "https://www.instagram.com/c4_surabaya/"
 ---

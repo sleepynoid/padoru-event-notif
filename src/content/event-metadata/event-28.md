@@ -1,9 +1,9 @@
 ---
-tanggal: "03 Jan 2026"
+tanggal: "08 Feb 2026"
 jam: ""
-lokasi: "GOR Segiri Indoor, Samarinda, Kalimantan Timur"
-area: "Samarinda"
-namaAcara: "Japan Project Chapter 03~ Tokyo District "
-lastUpdate: "03-01-2026 09:16"
-linkAcara: "https://www.facebook.com/photo/?fbid=10231635287533961&set=pcb.10164851993973836&__cft__[0]=AZZw8Jm3Ksg3SUgsTKtmXCARl2T3q3ySzAp_qtZYLF3EEr4QuQ1KGx09uOwFqM8NGtIMEUrkM1ZH8Xsr1LMp_DP4hWUTkwWK9zXM-09MLDa_3SN6Y0cDs9i1iWoz81PHp-PLT0AYRZl8BLsV40dOzBXVEHXTkPFJXEpJMKqouLygqK12noD8ts1KD6w3ghaOatE&__tn__=*b0H-R"
+lokasi: "Bogor Trade Mall (BTM), Bogor"
+area: "Bogor"
+namaAcara: "BTM Gakure"
+lastUpdate: "03-01-2026 09:15"
+linkAcara: "https://www.facebook.com/photo/?fbid=10231635331135051&set=gm.10164852007653836&idorvanity=251875943835&__cft__[0]=AZbh5z-XVhV9cKrMjMSzTyKomLks02fpS_OJ1xMVDyzk45x1eUdqGEci7BXwFuNB5bhbIRRS31VWixKhuhxBDSfEHOObr3jugC3xYAv_8cibjXbsodsrzJTpKbAW8hVnWT4C0iaWnvzUT_UGftSjVI171bgFUbKeNl0Kf_3NYbXx5GTIs9WbFwwd7kuv4LoTTgo&__tn__=EH-R"
 ---

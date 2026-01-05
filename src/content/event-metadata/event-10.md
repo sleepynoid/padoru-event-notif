@@ -1,9 +1,9 @@
 ---
-tanggal: "06 Des 2025"
+tanggal: "11 Jan 2026"
 jam: ""
-lokasi: "M Bloc Space"
-area: "Jakarta"
-namaAcara: "Festival Komik Shikisai "
-lastUpdate: "24-11-2025 16:35"
-linkAcara: "https://www.instagram.com/shikisai.id/"
+lokasi: "Unimas District, Waru"
+area: "Sidoarjo"
+namaAcara: "MINNA NO MUSUBI VOL. 3"
+lastUpdate: "24-11-2025 16:49"
+linkAcara: "https://www.instagram.com/p/DRTrdxgk5en/"
 ---

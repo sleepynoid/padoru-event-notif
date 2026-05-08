@@ -1,23 +1,23 @@
 ---
-import type { CollectionEntry } from "astro:content";
+import type { Event } from "../types/event";
 import { parseEventDate } from "../utils/dateUtils";
 
 interface Props {
-	events: CollectionEntry<"eventMetadata">[];
+	events: Event[];
 }
 
 const { events } = Astro.props;
 
 // Prepare all events data for client-side use
 const allEventsData = events.map((e) => {
-	const date = parseEventDate(e.data.tanggal);
+	const date = parseEventDate(e.tanggal);
 	return {
 		id: e.id,
-		namaAcara: e.data.namaAcara,
-		lokasi: e.data.lokasi,
-		jam: e.data.jam,
-		linkAcara: e.data.linkAcara,
-		tanggal: e.data.tanggal,
+		nama_acara: e.nama_acara,
+		lokasi: e.lokasi,
+		jam: e.jam,
+		link_acara: e.link_acara,
+		tanggal: e.tanggal,
 		year: date?.getFullYear() || null,
 		month: date?.getMonth() ?? null,
 		day: date?.getDate() || null,
@@ -186,8 +186,8 @@ const monthNames = [
 			popupBody.innerHTML = events
 				.map(
 					(event) => `
-				<a href="${event.linkAcara}" target="_blank" class="popup-event">
-					<div class="popup-event-name">${event.namaAcara}</div>
+				<a href="${event.link_acara}" target="_blank" class="popup-event">
+					<div class="popup-event-name">${event.nama_acara}</div>
 					<div class="popup-event-details">
 						<span>📍 ${event.lokasi}</span>
 						${event.jam ? `<span>🕐 ${event.jam}</span>` : ""}

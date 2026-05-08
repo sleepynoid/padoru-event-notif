@@ -1,11 +1,16 @@
 ---
-import { getCollection } from 'astro:content';
+import { supabase } from '../../lib/supabase';
 import BaseLayout from '../../layouts/BaseLayout.astro';
 import EventCard from '../../components/EventCard.astro';
 import EventCalendar from '../../components/EventCalendar.astro';
 import { sortByDate, getUniqueAreas } from '../../utils/eventUtils';
 
-const allEvents = await getCollection('eventMetadata');
+const { data: allEventsRaw } = await supabase
+	.from('events')
+	.select('*')
+	.order('tanggal', { ascending: false });
+
+const allEvents = allEventsRaw || [];
 const events = sortByDate(allEvents, 'desc');
 const uniqueAreas = getUniqueAreas(events);
 ---
@@ -42,13 +47,13 @@ const uniqueAreas = getUniqueAreas(events);
 		{
 			events.map((event) => (
 				<EventCard
-					tanggal={event.data.tanggal}
-					namaAcara={event.data.namaAcara}
-					lokasi={event.data.lokasi}
-					area={event.data.area}
-					jam={event.data.jam}
-					linkAcara={event.data.linkAcara}
-					lastUpdate={event.data.lastUpdate}
+					tanggal={event.tanggal}
+					nama_acara={event.nama_acara}
+					lokasi={event.lokasi}
+					area={event.area}
+					jam={event.jam}
+					link_acara={event.link_acara}
+					last_update={event.last_update}
 				/>
 			))
 		}

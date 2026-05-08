@@ -1,6 +1,6 @@
-import { getCollection } from 'astro:content';
 import rss from '@astrojs/rss';
-import { SITE_DESCRIPTION, SITE_TITLE } from '../consts';
+import { SITE_TITLE, SITE_DESCRIPTION } from '../consts';
+import { supabase } from '../lib/supabase';
 
 function parseDate(dateStr) {
 	if (!dateStr) return new Date();
@@ -24,16 +24,22 @@ function parseDate(dateStr) {
 }
 
 export async function GET(context) {
-	const events = await getCollection('eventMetadata');
+	const { data: events } = await supabase
+		.from('events')
+		.select('*')
+		.order('tanggal', { ascending: false });
+
+	if (!events) return new Response('No events found', { status: 404 });
+
 	return rss({
 		title: SITE_TITLE,
 		description: SITE_DESCRIPTION,
 		site: context.site,
 		items: events.map((event) => ({
-			title: event.data.namaAcara,
-			pubDate: parseDate(event.data.tanggal),
-			description: `${event.data.namaAcara} - ${event.data.lokasi}, ${event.data.area} pada ${event.data.tanggal}`,
-			link: `/events/event-${event.id.replace('event-', '')}/`,
+			title: event.nama_acara,
+			pubDate: parseDate(event.tanggal),
+			description: `${event.nama_acara} - ${event.lokasi}, ${event.area} pada ${event.tanggal}`,
+			link: `/events/${event.id}/`,
 		})),
 	});
 }

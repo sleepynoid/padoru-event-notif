@@ -4,14 +4,19 @@ services:
     container_name: padoru-event-notif
     restart: unless-stopped
     ports:
-      - "3000:8080"
+      - "3000:4321"
 
     # Security: Read-only filesystem
     read_only: true
     tmpfs:
-      - /var/cache/nginx:uid=1001,gid=1001
-      - /var/run:uid=1001,gid=1001
-      - /var/log/nginx:uid=1001,gid=1001
+      - /tmp:uid=1001,gid=1001
+
+    environment:
+      - SUPABASE_URL=${SUPABASE_URL}
+      - SUPABASE_KEY=${SUPABASE_KEY}
+      - GOOGLE_SHEET_URL=${GOOGLE_SHEET_URL}
+      - SYNC_SECRET=${SYNC_SECRET}
+      - SITE_URL=${SITE_URL}
 
     # Security: Drop all capabilities, add only what's needed
     cap_drop:
@@ -28,18 +33,18 @@ services:
       resources:
         limits:
           cpus: '0.5'
-          memory: 128M
+          memory: 256M
         reservations:
           cpus: '0.1'
-          memory: 32M
+          memory: 64M
 
     # Health check
     healthcheck:
-      test: [ "CMD", "wget", "--no-verbose", "--tries=1", "--spider", "http://localhost:8080/" ]
+      test: [ "CMD", "wget", "--no-verbose", "--tries=1", "--spider", "http://localhost:4321/" ]
       interval: 30s
       timeout: 3s
       retries: 3
-      start_period: 10s
+      start_period: 15s
 
     labels:
       - "com.centurylinklabs.watchtower.enable=true"
@@ -55,9 +60,8 @@ services:
       - /var/run/docker.sock:/var/run/docker.sock
     environment:
       - WATCHTOWER_CLEANUP=true
-      - WATCHTOWER_POLL_INTERVAL=3600 # Check every hour
-      - WATCHTOWER_LABEL_ENABLE=true # Only update labeled containers
-      - WATCHTOWER_NOTIFICATIONS=shoutrrr # Optional: notifications
+      - WATCHTOWER_POLL_INTERVAL=3600
+      - WATCHTOWER_LABEL_ENABLE=true
       - TZ=Asia/Jakarta
     command: --interval 3600
 

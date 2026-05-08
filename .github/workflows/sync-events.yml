@@ -1,0 +1,18 @@
+name: Sync Events
+
+on:
+  schedule:
+    - cron: '0 23 * * *'  # 06:00 WIB
+  workflow_dispatch:
+
+jobs:
+  sync:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Trigger sync endpoint
+        run: |
+          curl -X POST "${{ secrets.SITE_URL }}/api/sync" \
+            -H "Authorization: Bearer ${{ secrets.SYNC_SECRET }}" \
+            -H "Origin: ${{ secrets.SITE_URL }}" \
+            --fail \
+            --show-error

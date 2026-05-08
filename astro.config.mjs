@@ -1,6 +1,4 @@
-// @ts-check
-
-import mdx from '@astrojs/mdx';
+import node from '@astrojs/node';
 import sitemap from '@astrojs/sitemap';
 import { defineConfig } from 'astro/config';
 
@@ -8,10 +6,10 @@ import { defineConfig } from 'astro/config';
 export default defineConfig({
 	// Site URL - use env var for flexibility, fallback to localhost for dev
 	site: process.env.SITE_URL || 'http://localhost:3000',
-	// Build configuration
-	build: {
-		// Generate clean URLs with directory format (creates /page/index.html)
-		format: 'directory',
+	output: 'server',
+	adapter: node({ mode: 'standalone' }),
+	integrations: [sitemap()],
+	security: {
+		checkOrigin: process.env.NODE_ENV === 'production',
 	},
-	integrations: [mdx(), sitemap()],
 });

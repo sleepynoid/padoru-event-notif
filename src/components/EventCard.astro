@@ -1,32 +1,32 @@
 ---
 interface Props {
 	tanggal: string;
-	namaAcara: string;
+	nama_acara: string;
 	lokasi: string;
 	area: string;
 	jam?: string;
-	linkAcara: string;
+	link_acara: string;
 	imageUrl?: string;
-	lastUpdate?: string;
+	last_update?: string;
 }
 
 const { 
 	tanggal, 
-	namaAcara, 
+	nama_acara, 
 	lokasi, 
 	area, 
 	jam, 
-	linkAcara, 
-	lastUpdate 
+	link_acara, 
+	last_update 
 } = Astro.props;
 ---
 
-<article class="event-card" onclick={`window.open('${linkAcara}', '_blank')`}>
+<article class="event-card" onclick={`window.open('${link_acara}', '_blank')`}>
 	<div class="event-header">
 		<span class="event-date">{tanggal}</span>
 		{jam && <span class="event-time">{jam}</span>}
 	</div>
-	<h3 class="event-title">{namaAcara}</h3>
+	<h3 class="event-title">{nama_acara}</h3>
 	<div class="event-location">
 		<span class="location-icon">📍</span>
 		<span>{lokasi}</span>

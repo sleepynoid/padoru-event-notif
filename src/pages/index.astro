@@ -1,10 +1,13 @@
 ---
 import BaseLayout from '../layouts/BaseLayout.astro';
-import { getCollection } from 'astro:content';
+import { supabase } from '../lib/supabase';
 
-const events = await getCollection('eventMetadata');
-const upcomingCount = events.length;
-const areas = [...new Set(events.map(e => e.data.area))].length;
+const { count: upcomingCount } = await supabase
+	.from('events')
+	.select('*', { count: 'exact', head: true });
+
+const { data: areaData } = await supabase.from('events').select('area');
+const areas = new Set(areaData?.map(e => e.area)).size;
 ---
 
 <BaseLayout activeNav="home">

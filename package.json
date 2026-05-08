@@ -6,18 +6,21 @@
     "dev": "astro dev",
     "build": "astro build",
     "preview": "astro preview",
-    "astro": "astro",
-    "generate-events": "node --env-file=.env src/scripts/generate-events.js"
+    "astro": "astro"
   },
   "dependencies": {
-    "@astrojs/mdx": "^4.3.13",
-    "@astrojs/rss": "^4.0.14",
-    "@astrojs/sitemap": "^3.6.0",
-    "astro": "^5.16.6",
-    "papaparse": "^5.5.3",
-    "sharp": "^0.34.5"
+    "@astrojs/node": "~10.1.0",
+    "@astrojs/rss": "~4.0.18",
+    "@astrojs/sitemap": "~3.7.2",
+    "@supabase/supabase-js": "^2.105.3",
+    "astro": "^6.3.0",
+    "papaparse": "^5.5.3"
   },
   "devDependencies": {
-    "@types/papaparse": "^5.5.2"
+    "@astrojs/check": "^0.9.9",
+    "@types/papaparse": "^5.5.2",
+    "dotenv": "^17.4.2",
+    "tsx": "^4.21.0",
+    "typescript": "^6.0.3"
   }
 }

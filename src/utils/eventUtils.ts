@@ -2,17 +2,17 @@
  * Event utilities for filtering, sorting, and processing events
  */
 
-import type { CollectionEntry } from 'astro:content';
+import type { Event } from '../types/event';
 import { parseEventDate, isUpcoming, isPast } from './dateUtils';
 
-export type EventEntry = CollectionEntry<'eventMetadata'>;
+export type EventEntry = Event;
 
 /**
  * Filter events by area/city
  */
 export function filterByArea(events: EventEntry[], area: string): EventEntry[] {
     if (!area || area === 'all') return events;
-    return events.filter(e => e.data.area.toLowerCase() === area.toLowerCase());
+    return events.filter(e => e.area.toLowerCase() === area.toLowerCase());
 }
 
 /**
@@ -24,7 +24,7 @@ export function filterByDateRange(
     endDate: Date
 ): EventEntry[] {
     return events.filter(event => {
-        const eventDate = parseEventDate(event.data.tanggal);
+        const eventDate = parseEventDate(event.tanggal);
         if (!eventDate) return false;
         return eventDate >= startDate && eventDate <= endDate;
     });
@@ -35,8 +35,8 @@ export function filterByDateRange(
  */
 export function sortByDate(events: EventEntry[], order: 'asc' | 'desc' = 'desc'): EventEntry[] {
     return [...events].sort((a, b) => {
-        const dateA = parseEventDate(a.data.tanggal);
-        const dateB = parseEventDate(b.data.tanggal);
+        const dateA = parseEventDate(a.tanggal);
+        const dateB = parseEventDate(b.tanggal);
 
         if (!dateA && !dateB) return 0;
         if (!dateA) return 1;
@@ -51,7 +51,7 @@ export function sortByDate(events: EventEntry[], order: 'asc' | 'desc' = 'desc')
  * Get unique areas from events
  */
 export function getUniqueAreas(events: EventEntry[]): string[] {
-    const areas = events.map(e => e.data.area).filter(Boolean);
+    const areas = events.map(e => e.area).filter(Boolean);
     return [...new Set(areas)].sort();
 }
 
@@ -60,7 +60,7 @@ export function getUniqueAreas(events: EventEntry[]): string[] {
  */
 export function getUpcomingEvents(events: EventEntry[]): EventEntry[] {
     return events.filter(event => {
-        const date = parseEventDate(event.data.tanggal);
+        const date = parseEventDate(event.tanggal);
         return isUpcoming(date);
     });
 }
@@ -70,7 +70,7 @@ export function getUpcomingEvents(events: EventEntry[]): EventEntry[] {
  */
 export function getPastEvents(events: EventEntry[]): EventEntry[] {
     return events.filter(event => {
-        const date = parseEventDate(event.data.tanggal);
+        const date = parseEventDate(event.tanggal);
         return isPast(date);
     });
 }
@@ -83,9 +83,9 @@ export function searchEvents(events: EventEntry[], query: string): EventEntry[] 
 
     const lowerQuery = query.toLowerCase();
     return events.filter(event => {
-        const { namaAcara, lokasi, area } = event.data;
+        const { nama_acara, lokasi, area } = event;
         return (
-            namaAcara.toLowerCase().includes(lowerQuery) ||
+            nama_acara.toLowerCase().includes(lowerQuery) ||
             lokasi.toLowerCase().includes(lowerQuery) ||
             area.toLowerCase().includes(lowerQuery)
         );
@@ -96,7 +96,7 @@ export function searchEvents(events: EventEntry[], query: string): EventEntry[] 
  * Generate a URL-friendly slug from event name
  */
 export function generateEventSlug(event: EventEntry): string {
-    return event.data.namaAcara
+    return event.nama_acara
         .toLowerCase()
         .replace(/[^a-z0-9]+/g, '-')
         .replace(/^-|-$/g, '')

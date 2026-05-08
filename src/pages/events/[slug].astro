@@ -1,42 +1,55 @@
 ---
-import { getCollection } from 'astro:content';
+import { supabase } from '../../lib/supabase';
 import BaseLayout from '../../layouts/BaseLayout.astro';
-import { getUniqueAreas } from '../../utils/eventUtils';
+import type { Event } from '../../types/event';
 
-export async function getStaticPaths() {
-	const events = await getCollection('eventMetadata');
-	return events.map((event, index) => ({
-		params: { slug: `event-${event.id.replace('event-', '')}` },
-		props: { event, allEvents: events, index },
-	}));
+const { slug } = Astro.params;
+
+if (!slug) {
+	return Astro.redirect('/events');
 }
 
-const { event, allEvents, index } = Astro.props;
+const { data: events } = await supabase
+	.from('events')
+	.select('*')
+	.eq('id', slug)
+	.limit(1);
 
-const relatedEvents = allEvents
-	.filter(e => e.data.area === event.data.area && e.id !== event.id)
-	.slice(0, 3);
+const event = events?.[0];
+
+if (!event) {
+	return Astro.redirect('/events');
+}
+
+const { data: relatedEventsData } = await supabase
+	.from('events')
+	.select('*')
+	.eq('area', event.area)
+	.neq('id', event.id)
+	.limit(3);
+
+const relatedEvents = (relatedEventsData || []) as Event[];
 ---
 
 <BaseLayout 
-	title={`${event.data.namaAcara} | Padoru Event Notif`} 
-	description={`${event.data.namaAcara} - ${event.data.lokasi}, ${event.data.area}`}
+	title={`${event.nama_acara} | Padoru Event Notif`} 
+	description={`${event.nama_acara} - ${event.lokasi}, ${event.area}`}
 	activeNav="events"
 >
 	<a href="/events" class="back-link">← Back to Events</a>
 	
 	<article class="event-detail">
 		<header class="event-header">
-			<span class="event-date-badge">{event.data.tanggal}</span>
-			<h1 class="event-title">{event.data.namaAcara}</h1>
+			<span class="event-date-badge">{event.tanggal}</span>
+			<h1 class="event-title">{event.nama_acara}</h1>
 			<div class="event-meta">
-				<span class="meta-item">📍 {event.data.lokasi}</span>
+				<span class="meta-item">📍 {event.lokasi}</span>
 				<span class="meta-divider">•</span>
-				<span class="meta-item">🏙️ {event.data.area}</span>
-				{event.data.jam && (
+				<span class="meta-item">🏙️ {event.area}</span>
+				{event.jam && (
 					<>
 						<span class="meta-divider">•</span>
-						<span class="meta-item">🕐 {event.data.jam}</span>
+						<span class="meta-item">🕐 {event.jam}</span>
 					</>
 				)}
 			</div>
@@ -47,31 +60,31 @@ const relatedEvents = allEvents
 			<dl class="info-list">
 				<div class="info-item">
 					<dt>📅 Date</dt>
-					<dd>{event.data.tanggal}</dd>
+					<dd>{event.tanggal}</dd>
 				</div>
-				{event.data.jam && (
+				{event.jam && (
 					<div class="info-item">
 						<dt>🕐 Time</dt>
-						<dd>{event.data.jam}</dd>
+						<dd>{event.jam}</dd>
 					</div>
 				)}
 				<div class="info-item">
 					<dt>📍 Location</dt>
-					<dd>{event.data.lokasi}</dd>
+					<dd>{event.lokasi}</dd>
 				</div>
 				<div class="info-item">
 					<dt>🏙️ City</dt>
-					<dd>{event.data.area}</dd>
+					<dd>{event.area}</dd>
 				</div>
-				{event.data.lastUpdate && (
+				{event.last_update && (
 					<div class="info-item">
 						<dt>🔄 Updated</dt>
-						<dd>{event.data.lastUpdate}</dd>
+						<dd>{event.last_update}</dd>
 					</div>
 				)}
 			</dl>
 			
-			<a href={event.data.linkAcara} target="_blank" rel="noopener noreferrer" class="cta-button">
+			<a href={event.link_acara} target="_blank" rel="noopener noreferrer" class="cta-button">
 				View Event Page
 				<span>→</span>
 			</a>
@@ -79,13 +92,13 @@ const relatedEvents = allEvents
 
 		{relatedEvents.length > 0 && (
 			<section class="related-section">
-				<h2>More in {event.data.area}</h2>
+				<h2>More in {event.area}</h2>
 				<div class="related-grid">
 					{relatedEvents.map(related => (
-						<a href={`/events/event-${related.id.replace('event-', '')}`} class="related-card">
-							<span class="related-date">{related.data.tanggal}</span>
-							<h3 class="related-title">{related.data.namaAcara}</h3>
-							<span class="related-location">{related.data.lokasi}</span>
+						<a href={`/events/${related.id}`} class="related-card">
+							<span class="related-date">{related.tanggal}</span>
+							<h3 class="related-title">{related.nama_acara}</h3>
+							<span class="related-location">{related.lokasi}</span>
 						</a>
 					))}
 				</div>

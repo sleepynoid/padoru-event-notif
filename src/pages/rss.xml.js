@@ -1,6 +1,7 @@
 import rss from '@astrojs/rss';
 import { SITE_TITLE, SITE_DESCRIPTION } from '../consts';
-import { supabase } from '../lib/supabase';
+import { getDb } from '../db';
+import { events as eventsTable } from '../db/schema';
 
 function parseDate(dateStr) {
 	if (!dateStr) return new Date();
@@ -24,12 +25,16 @@ function parseDate(dateStr) {
 }
 
 export async function GET(context) {
-	const { data: events } = await supabase
-		.from('events')
-		.select('*')
-		.order('tanggal', { ascending: false });
+	const { db, close } = getDb(context.locals);
+	let events = [];
 
-	if (!events) return new Response('No events found', { status: 404 });
+	try {
+		events = await db.select().from(eventsTable);
+	} catch (e) {
+		return new Response('No events found', { status: 404 });
+	} finally {
+		close();
+	}
 
 	return rss({
 		title: SITE_TITLE,

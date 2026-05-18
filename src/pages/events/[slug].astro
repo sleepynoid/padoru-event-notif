@@ -1,7 +1,9 @@
 ---
-import { supabase } from '../../lib/supabase';
+import { getDb } from '../../db';
+import { events as eventsTable } from '../../db/schema';
+import type { Event } from '../../db/schema';
 import BaseLayout from '../../layouts/BaseLayout.astro';
-import type { Event } from '../../types/event';
+import { eq, ne, and } from 'drizzle-orm';
 
 const { slug } = Astro.params;
 
@@ -9,26 +11,31 @@ if (!slug) {
 	return Astro.redirect('/events');
 }
 
-const { data: events } = await supabase
-	.from('events')
-	.select('*')
-	.eq('id', slug)
-	.limit(1);
+const { db, close } = getDb(Astro.locals);
+let event: Event | undefined;
+let relatedEvents: Event[] = [];
 
-const event = events?.[0];
+try {
+	const result = await db.select().from(eventsTable).where(eq(eventsTable.id, slug)).limit(1);
+	event = result[0];
+
+	if (event) {
+		relatedEvents = await db.select().from(eventsTable)
+			.where(
+				and(
+					eq(eventsTable.area, event.area),
+					ne(eventsTable.id, event.id)
+				)
+			)
+			.limit(3);
+	}
+} finally {
+	close();
+}
 
 if (!event) {
 	return Astro.redirect('/events');
 }
-
-const { data: relatedEventsData } = await supabase
-	.from('events')
-	.select('*')
-	.eq('area', event.area)
-	.neq('id', event.id)
-	.limit(3);
-
-const relatedEvents = (relatedEventsData || []) as Event[];
 ---
 
 <BaseLayout 

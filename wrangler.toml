@@ -1,0 +1,7 @@
+name = "event"
+compatibility_date = "2026-05-18"
+compatibility_flags = [ "nodejs_compat" ]
+
+[[hyperdrive]]
+binding = "HYPERDRIVE"
+id = "367e05d61c7b41129eaf8fa2c7ddda0e"

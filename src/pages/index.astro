@@ -1,13 +1,22 @@
 ---
 import BaseLayout from '../layouts/BaseLayout.astro';
-import { supabase } from '../lib/supabase';
+import { getDb } from '../db';
+import { events } from '../db/schema';
+import { sql } from 'drizzle-orm';
 
-const { count: upcomingCount } = await supabase
-	.from('events')
-	.select('*', { count: 'exact', head: true });
+const { db, close } = getDb(Astro.locals);
+let upcomingCount = 0;
+let areas = 0;
 
-const { data: areaData } = await supabase.from('events').select('area');
-const areas = new Set(areaData?.map(e => e.area)).size;
+try {
+	const [{ count }] = await db.select({ count: sql<number>`count(*)` }).from(events);
+	upcomingCount = Number(count);
+
+	const areaRows = await db.selectDistinct({ area: events.area }).from(events);
+	areas = areaRows.length;
+} finally {
+	close();
+}
 ---
 
 <BaseLayout activeNav="home">

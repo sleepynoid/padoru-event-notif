@@ -5,22 +5,31 @@
   "scripts": {
     "dev": "astro dev",
     "build": "astro build",
-    "preview": "astro preview",
-    "astro": "astro"
+    "preview": "wrangler dev",
+    "deploy": "astro build && wrangler deploy",
+    "db:push": "drizzle-kit push",
+    "db:studio": "drizzle-kit studio",
+    "db:generate": "drizzle-kit generate",
+    "db:migrate": "drizzle-kit migrate"
   },
   "dependencies": {
-    "@astrojs/node": "~10.1.0",
+    "@astrojs/cloudflare": "^13.5.1",
     "@astrojs/rss": "~4.0.18",
     "@astrojs/sitemap": "~3.7.2",
     "@supabase/supabase-js": "^2.105.3",
     "astro": "^6.3.0",
-    "papaparse": "^5.5.3"
+    "drizzle-orm": "^0.45.2",
+    "papaparse": "^5.5.3",
+    "pg": "^8.20.0"
   },
   "devDependencies": {
     "@astrojs/check": "^0.9.9",
     "@types/papaparse": "^5.5.2",
+    "@types/pg": "^8.20.0",
     "dotenv": "^17.4.2",
+    "drizzle-kit": "^0.31.10",
     "tsx": "^4.21.0",
-    "typescript": "^6.0.3"
+    "typescript": "^6.0.3",
+    "wrangler": "^4.92.0"
   }
 }

@@ -2,33 +2,10 @@
  * Event utilities for filtering, sorting, and processing events
  */
 
-import type { Event } from '../types/event';
-import { parseEventDate, isUpcoming, isPast } from './dateUtils';
+import type { Event } from '../db/schema';
+import { parseEventDate } from './dateUtils';
 
 export type EventEntry = Event;
-
-/**
- * Filter events by area/city
- */
-export function filterByArea(events: EventEntry[], area: string): EventEntry[] {
-    if (!area || area === 'all') return events;
-    return events.filter(e => e.area.toLowerCase() === area.toLowerCase());
-}
-
-/**
- * Filter events by date range
- */
-export function filterByDateRange(
-    events: EventEntry[],
-    startDate: Date,
-    endDate: Date
-): EventEntry[] {
-    return events.filter(event => {
-        const eventDate = parseEventDate(event.tanggal);
-        if (!eventDate) return false;
-        return eventDate >= startDate && eventDate <= endDate;
-    });
-}
 
 /**
  * Sort events by date
@@ -55,50 +32,3 @@ export function getUniqueAreas(events: EventEntry[]): string[] {
     return [...new Set(areas)].sort();
 }
 
-/**
- * Get upcoming events only
- */
-export function getUpcomingEvents(events: EventEntry[]): EventEntry[] {
-    return events.filter(event => {
-        const date = parseEventDate(event.tanggal);
-        return isUpcoming(date);
-    });
-}
-
-/**
- * Get past events only
- */
-export function getPastEvents(events: EventEntry[]): EventEntry[] {
-    return events.filter(event => {
-        const date = parseEventDate(event.tanggal);
-        return isPast(date);
-    });
-}
-
-/**
- * Search events by name or location
- */
-export function searchEvents(events: EventEntry[], query: string): EventEntry[] {
-    if (!query.trim()) return events;
-
-    const lowerQuery = query.toLowerCase();
-    return events.filter(event => {
-        const { nama_acara, lokasi, area } = event;
-        return (
-            nama_acara.toLowerCase().includes(lowerQuery) ||
-            lokasi.toLowerCase().includes(lowerQuery) ||
-            area.toLowerCase().includes(lowerQuery)
-        );
-    });
-}
-
-/**
- * Generate a URL-friendly slug from event name
- */
-export function generateEventSlug(event: EventEntry): string {
-    return event.nama_acara
-        .toLowerCase()
-        .replace(/[^a-z0-9]+/g, '-')
-        .replace(/^-|-$/g, '')
-        .substring(0, 50);
-}

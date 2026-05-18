@@ -13,12 +13,17 @@ yarn-error.log*
 pnpm-debug.log*
 
 
-# environment variables
+# environment variables & secrets
 .env
-.env.production
+.env.*
+.dev.vars
 
 # macOS-specific files
 .DS_Store
+
+# Cloudflare Wrangler files
+.wrangler/
+wrangler-*.log
 
 # jetbrains setting folder
 .idea/
